@@ -17,6 +17,8 @@ func RegisterAssetsRoutes(api fiber.Router) {
 func RegisterRoutes(api fiber.Router) {
 
 	//Auth
+	api.Post("/login", controllers.Login)
+	api.Post("/register", controllers.Register)
 
 	//Users
 	userController := controllers.UserController{}
