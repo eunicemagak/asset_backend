@@ -13,16 +13,6 @@ type AssetController struct {
 	DB *sql.DB
 }
 
-/*
-func (c *AssetController) Index(ctx *fiber.Ctx) error {
-
-	return ctx.JSON(fiber.Map{
-		"message": "Hello world",
-	})
-}
-*/
-
-// func AllAssets(c *fiber.Ctx) error {
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 

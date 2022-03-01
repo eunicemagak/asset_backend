@@ -13,6 +13,12 @@ type AssignController struct {
 	DB gorm.DB
 }
 
+func (c *AssignController) Index(ctx *fiber.Ctx) error {
+	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+
+	return ctx.JSON(models.Paginate(database.DB, &models.Assign{}, page))
+}
+
 func (c AssignController) AssignAsset(ctx *fiber.Ctx) error {
 
 	var user models.User
@@ -39,7 +45,7 @@ func (c AssignController) AssignAsset(ctx *fiber.Ctx) error {
 	return ctx.JSON(assign)
 }
 
-func (c *AssetController) GetAssign(ctx *fiber.Ctx) error {
+func (c *AssignController) GetAssign(ctx *fiber.Ctx) error {
 	id, _ := strconv.Atoi(ctx.Params("id"))
 	var asset models.Asset
 	var user models.User

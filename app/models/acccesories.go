@@ -2,7 +2,7 @@ package models
 
 import "gorm.io/gorm"
 
-type Asset struct {
+type Accesorie struct {
 	ID           uint   `gorm:"id"`
 	Title        string `json:"title"`
 	SerialNumber string `json:"serialnumber"`
@@ -11,17 +11,17 @@ type Asset struct {
 	Price        string `json:"price"`
 }
 
-func (asset *Asset) Count(db *gorm.DB) int64 {
+func (acccesorie *Accesorie) Count(db *gorm.DB) int64 {
 	var total int64
-	db.Model(&Asset{}).Count(&total)
+	db.Model(&Accesorie{}).Count(&total)
 
 	return total
 }
 
-func (asset *Asset) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var assets []Asset
+func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{} {
+	var acccesories []Accesorie
 
-	db.Offset(offset).Limit(limit).Find(&assets)
+	db.Offset(offset).Limit(limit).Find(&acccesories)
 
-	return assets
+	return acccesorie
 }
