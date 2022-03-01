@@ -6,7 +6,6 @@ import (
 	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
-	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/middlewares"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
 )
@@ -26,7 +25,7 @@ func (c *UserController) Index(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
-	// if err := middlewares.IsAuthorized(ctx, "users"); err != nil {
+	// if err := middlewares.IsAuthenticated()(ctx, "users"); err != nil {
 	// 	return err
 	// }
 	// if err := middlewares.IsAuthenticated(ctx); err != nil {
@@ -39,7 +38,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	user.SetPassword("1234")
+	// user.SetPassword("1234")
 
 	database.DB.Create(&user)
 
@@ -82,9 +81,9 @@ func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
-	if err := middlewares.IsAuthenticated(ctx); err != nil {
-		return err
-	}
+	// if err := middlewares.IsAuthenticated(ctx); err != nil {
+	// 	return err
+	// }
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
 	user := models.User{
