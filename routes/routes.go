@@ -19,6 +19,7 @@ func RegisterRoutes(api fiber.Router) {
 	//Auth
 	api.Post("/login", controllers.Login)
 	api.Post("/register", controllers.Register)
+	api.Post("/logout", controllers.Logout)
 
 	//Users
 	userController := controllers.UserController{}

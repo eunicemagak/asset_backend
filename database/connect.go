@@ -12,7 +12,7 @@ var DB *gorm.DB
 
 func Connect() {
 	//connect to the db and iniatialize the db variable
-	database, err := gorm.Open(mysql.Open("root:@/assetms"), &gorm.Config{})
+	database, err := gorm.Open(mysql.Open("root:@/asset_be"), &gorm.Config{})
 
 	if err != nil {
 		panic("Could not connect to the database")
@@ -21,6 +21,6 @@ func Connect() {
 
 	//Migrate the database
 	DB = database
-	database.AutoMigrate(&models.User{}, &models.Role{}, &models.Permission{}, &models.Asset{})
+	database.AutoMigrate(&models.User{}, &models.Role{}, &models.Permission{}, &models.Asset{}, &models.Accesorie{}, &models.Department{}, &models.Admin{})
 	fmt.Println("Database Migrated")
 }

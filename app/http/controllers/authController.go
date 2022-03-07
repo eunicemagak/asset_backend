@@ -23,7 +23,7 @@ func Register(c *fiber.Ctx) error {
 	//registration validations
 	if data["first_name"] == "" {
 		return c.Status(500).JSON(fiber.Map{
-			"message": "Firstname is required!",
+			"message": " first name is required!",
 		})
 	}
 	if data["last_name"] == "" {
@@ -53,18 +53,17 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	user := models.User{
+	admin := models.Admin{
 		FirstName: data["first_name"],
 		LastName:  data["last_name"],
 		Email:     data["email"],
-		RoleId:    1,
 	}
 
-	user.SetPassword(data["password"])
+	admin.SetPassword(data["password"])
 
-	database.DB.Create(&user)
+	database.DB.Create(&admin)
 
-	return c.JSON(user)
+	return c.JSON(admin)
 }
 
 ////LOGIN
@@ -92,25 +91,25 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	var user models.User
+	var admin models.Admin
 
-	database.DB.Where("email = ?", data["email"]).First(&user)
+	database.DB.Where("email = ?", data["email"]).First(&admin)
 
-	if user.ID == 0 {
+	if admin.ID == 0 {
 		c.Status(404)
 		return c.JSON(fiber.Map{
 			"message": "Invalid Email or Password",
 		})
 	}
 
-	if err := user.ComparePassword(data["password"]); err != nil {
+	if err := admin.ComparePassword(data["password"]); err != nil {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "Invalid Password",
 		})
 	}
 
-	token, err := util.GenerateJwt(strconv.Itoa(int(user.ID)))
+	token, err := util.GenerateJwt(strconv.Itoa(int(admin.ID)))
 
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
@@ -131,16 +130,16 @@ func Login(c *fiber.Ctx) error {
 	})
 }
 
-func User(c *fiber.Ctx) error {
+func Admin(c *fiber.Ctx) error {
 	cookie := c.Get("authorization")
 
 	id, _ := util.ParseJwt(cookie)
 
-	var user models.User
+	var admin models.Admin
 
-	database.DB.Where("id = ?", id).First(&user)
+	database.DB.Where("id = ?", id).First(&admin)
 
-	return c.JSON(user)
+	return c.JSON(admin)
 }
 
 func Logout(c *fiber.Ctx) error {
@@ -171,16 +170,16 @@ func UpdateInfo(c *fiber.Ctx) error {
 
 	userId, _ := strconv.Atoi(id)
 
-	user := models.User{
+	admin := models.Admin{
 		ID:        uint(userId),
 		FirstName: data["first_name"],
 		LastName:  data["last_name"],
 		Email:     data["email"],
 	}
 
-	database.DB.Model(&user).Updates(user)
+	database.DB.Model(&admin).Updates(admin)
 
-	return c.JSON(user)
+	return c.JSON(admin)
 }
 
 func UpdatePassword(c *fiber.Ctx) error {
@@ -201,15 +200,15 @@ func UpdatePassword(c *fiber.Ctx) error {
 
 	id, _ := util.ParseJwt(cookie)
 
-	userId, _ := strconv.Atoi(id)
+	adminId, _ := strconv.Atoi(id)
 
-	user := models.User{
-		ID: uint(userId),
+	admin := models.Admin{
+		ID: uint(adminId),
 	}
 
-	user.SetPassword(data["password"])
+	admin.SetPassword(data["password"])
 
-	database.DB.Model(&user).Updates(user)
+	database.DB.Model(&admin).Updates(admin)
 
-	return c.JSON(user)
+	return c.JSON(admin)
 }

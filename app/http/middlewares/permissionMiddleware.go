@@ -23,16 +23,16 @@ func IsAuthorized(c *fiber.Ctx, page string) error {
 		return err
 	}
 
-	userId, _ := strconv.Atoi(Id)
+	adminId, _ := strconv.Atoi(Id)
 
-	user := models.User{
-		ID: uint(userId),
+	admin := models.Admin{
+		ID: uint(adminId),
 	}
 
-	database.DB.Preload("Role").Find(&user)
+	database.DB.Preload("Role").Find(&admin)
 
 	role := models.Role{
-		ID: user.RoleId,
+		ID: admin.RoleId,
 	}
 
 	database.DB.Preload("Permissions").Find(&role)
