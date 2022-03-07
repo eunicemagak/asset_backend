@@ -7,15 +7,15 @@ import (
 )
 
 type Assign struct {
-	ID        uint  `gorm:"primarykey"`
-	UserId    uint  `json:"user_id"`
-	AssetId   uint  `json:"asset_id"`
-	Asset     Asset `json:"asset"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	gorm.Model
 
-	User User `json:"user"`
+	ID      uint  `gorm:"primarykey"`
+	UserId  uint  `json:"user_id"`
+	AssetId uint  `json:"asset_id"`
+	User    User  `json:"user"`
+	Asset   Asset `json:"asset"`
+
+	CreatedAt time.Time
 }
 
 func (assign *Assign) Count(db *gorm.DB) int64 {
@@ -31,9 +31,4 @@ func (assign *Assign) Take(db *gorm.DB, limit int, offset int) interface{} {
 	db.Offset(offset).Limit(limit).Find(&assets)
 
 	return assets
-	var users []User
-
-	db.Offset(offset).Limit(limit).Find(&users)
-
-	return users
 }

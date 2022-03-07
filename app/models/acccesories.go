@@ -23,5 +23,5 @@ func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{
 
 	db.Offset(offset).Limit(limit).Find(&acccesories)
 
-	return acccesories
+	return acccesorie
 }

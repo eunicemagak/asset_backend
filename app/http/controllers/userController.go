@@ -31,6 +31,12 @@ func (c *UserController) Index(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
+	// if err := middlewares.IsAuthenticated()(ctx, "users"); err != nil {
+	// 	return err
+	// }
+	// if err := middlewares.IsAuthenticated(ctx); err != nil {
+	// 	return err
+	// }
 
 	var userReq createUserReq
 	if err := ctx.BodyParser(&userReq); err != nil {
@@ -41,12 +47,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	}
 	database.DB.Find(&asset)
 
-	user := models.User{
-		ID:           userReq.ID,
-		Name:         userReq.Name,
-		Email:        userReq.Email,
-		DepartmentID: userReq.DepartmentID,
-	}
+	// user.SetPassword("1234")
 
 	// user.SetPassword("1234")
 	database.DB.Create(&user)

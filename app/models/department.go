@@ -3,9 +3,8 @@ package models
 import "gorm.io/gorm"
 
 type Department struct {
-	ID       uint   `gorm:"id"`
-	Title    string `json:"title"`
-	UserName string `json:"name"`
+	ID    uint   `gorm:"id"`
+	Title string `json:"title"`
 }
 
 func (department *Department) Count(db *gorm.DB) int64 {
