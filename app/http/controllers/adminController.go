@@ -45,9 +45,9 @@ func (c *AdminController) CreateAdmin(ctx *fiber.Ctx) error {
 }
 
 func (c *AdminController) GetAdmin(ctx *fiber.Ctx) error {
-	if err := middlewares.IsAuthenticated(ctx); err != nil {
-		return err
-	}
+	// if err := middlewares.IsAuthenticated(ctx); err != nil {
+	// 	return err
+	// }
 
 	id, _ := strconv.Atoi(ctx.Params("name"))
 
@@ -61,29 +61,29 @@ func (c *AdminController) GetAdmin(ctx *fiber.Ctx) error {
 }
 
 func (c *AdminController) UpdateAdmin(ctx *fiber.Ctx) error {
-	// if err := middlewares.IsAuthenticated(ctx); err != nil {
-	//         return err
-	// }
-
-	id, _ := strconv.Atoi(ctx.Params("id"))
-
-	user := models.User{
-		ID: uint(id),
-	}
-
-	if err := ctx.BodyParser(&user); err != nil {
+	if err := middlewares.IsAuthenticated(ctx); err != nil {
 		return err
 	}
 
-	database.DB.Model(&user).Updates(user)
+	id, _ := strconv.Atoi(ctx.Params("id"))
 
-	return ctx.JSON(user)
+	admin := models.Admin{
+		ID: uint(id),
+	}
+
+	if err := ctx.BodyParser(&admin); err != nil {
+		return err
+	}
+
+	database.DB.Model(&admin).Updates(admin)
+
+	return ctx.JSON(admin)
 }
 
 func (c *AdminController) DeleteAdmin(ctx *fiber.Ctx) error {
-	// if err := middlewares.IsAuthenticated(ctx); err != nil {
-	//         return err
-	// }
+	if err := middlewares.IsAuthenticated(ctx); err != nil {
+		return err
+	}
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
 	admin := models.Admin{

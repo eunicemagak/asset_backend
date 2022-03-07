@@ -14,9 +14,9 @@ type Admin struct {
 	Email     string         `json:"email" gorm:"unique"`
 	Password  []byte         `json:"-"`
 	RoleId    uint           `json:"role_id"`
-	CreatedAt time.Time      `gorm:"column:updated_at"`
-	UpdatedAt time.Time      `gorm:"column:created_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
+	CreatedAt time.Time      `gorm:"index"`
+	UpdatedAt time.Time      `gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (admin *Admin) SetPassword(password string) {
@@ -24,6 +24,11 @@ func (admin *Admin) SetPassword(password string) {
 	admin.Password = hashedPassword
 }
 
+// func (user *User) ComparePassword(password string) error {
+// 	return bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+// }
+
+// ComparePassword: Check if the provided password is correct or not
 func (admin *Admin) ComparePassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
 }

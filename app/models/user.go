@@ -20,12 +20,12 @@ type User struct {
 }
 
 // func (user *User) SetPassword(password string) {
-//  hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
-//  user.Password = hashedPassword
+// 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
+// 	user.Password = hashedPassword
 // }
 
 // func (user *User) ComparePassword(password string) error {
-//  return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+// 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 // }
 
 func (user *User) Count(db *gorm.DB) int64 {

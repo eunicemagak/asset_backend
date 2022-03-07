@@ -21,6 +21,15 @@ func RegisterRoutes(api fiber.Router) {
 	api.Post("/register", controllers.Register)
 	api.Post("/logout", controllers.Logout)
 
+	//Admin
+	adminController := controllers.AdminController{}
+	admins := api.Group("/admin")
+	admins.Get("/", adminController.Index)
+	admins.Post("/", adminController.CreateAdmin)
+	admins.Patch("/:id", adminController.UpdateAdmin)
+	admins.Get("/:id", adminController.GetAdmin)
+	admins.Delete("/:id", adminController.DeleteAdmin)
+
 	//Users
 	userController := controllers.UserController{}
 	users := api.Group("/users", middlewares.IsAuthenticated)
@@ -46,4 +55,23 @@ func RegisterRoutes(api fiber.Router) {
 	// api.Patch("/complaints/:id", complaintController.UpdateComplaint)
 	// api.Get("/complaints/:id", complaintController.GetComplaint)
 	// api.Delete("/complaints/:id", complaintController.DeleteComplaint)
+
+	//Department
+	departmentController := controllers.DepartmentController{}
+	departments := api.Group("/department")
+	departments.Get("/", departmentController.Index)
+	departments.Post("/", departmentController.CreateDepartment)
+	departments.Patch("/:id", departmentController.UpdateDepartment)
+	departments.Get("/:id", departmentController.GetDepartment)
+	departments.Delete("/:id", departmentController.DeleteDepartment)
+
+	//Accesories
+	acccesorieController := controllers.AccesorieController{}
+	acccesories := api.Group("/accessories")
+	acccesories.Get("/", acccesorieController.Index)
+	acccesories.Post("/", acccesorieController.CreateAccesorie)
+	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
+	acccesories.Get("/:id", acccesorieController.GetAccesorie)
+	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
+
 }

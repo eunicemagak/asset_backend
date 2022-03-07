@@ -88,7 +88,7 @@ func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
 
 func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
 	// if err := middlewares.IsAuthenticated(ctx); err != nil {
-	//  return err
+	// 	return err
 	// }
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
