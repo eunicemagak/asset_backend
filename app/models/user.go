@@ -3,37 +3,25 @@ package models
 import (
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID         uint           `gorm:"primarykey"`
-	FirstName  string         `json:"first_name"`
-	LastName   string         `json:"last_name"`
-	Email      string         `json:"email" gorm:"unique"`
-	Password   []byte         `json:"-"`
-	Department string         `json:"department"`
-	Assign     string         `json:"assign"`
-	RoleId     uint           `json:"role_id"`
-	CreatedAt  time.Time      `gorm:"index"`
-	UpdatedAt  time.Time      `gorm:"index"`
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	ID    uint   `gorm:"primarykey"`
+	Name  string `json:"name"`
+	Email string `json:"email" gorm:"unique"`
+
+	DepartmentID uint      `json:"department_id"`
+	AccesorieID  uint      `json:"accesorie_id"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+
+	Assets     []Asset    `json:"assets" gorm:"many2many:user_assets;"`
+	Department Department `json:"department" `
+	Accesorie  Accesorie  `json:"accesorie"`
 }
 
-func (user *User) SetPassword(password string) {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
-	user.Password = hashedPassword
-}
-
-// func (user *User) ComparePassword(password string) error {
-// 	return bcrypt.CompareHashAndPassword(user.Password, []byte(password))
 // }
-
-// ComparePassword: Check if the provided password is correct or not
-func (user *User) ComparePassword(password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-}
 
 func (user *User) Count(db *gorm.DB) int64 {
 	var total int64
@@ -42,10 +30,11 @@ func (user *User) Count(db *gorm.DB) int64 {
 	return total
 }
 
+//Relationship btwn a User and Asset
 func (user *User) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var assets []User
+	var users []User
 
-	db.Preload("Role").Offset(offset).Limit(limit).Find(&assets)
+	db.Preload("Assets").Preload("Department").Preload("Accesorie").Offset(offset).Limit(limit).Find(&users)
 
-	return assets
+	return users
 }

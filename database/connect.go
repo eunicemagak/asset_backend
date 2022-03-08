@@ -36,15 +36,14 @@ func ConnectDB() {
 	fmt.Println("Connection Opened to Database")
 
 	// Migrate the database
-	DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Assign{}, &models.Accesorie{}, &models.Department{})
-	fmt.Println("Database Migrated")
+	DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Role{}, &models.Accesorie{}, &models.Department{}, &models.Admin{})
 }
 
 func AutoMigrate() {
-	err := DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Accesorie{}, &models.Department{})
+	err := DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Accesorie{}, &models.Department{}, &models.Admin{})
 	if err != nil {
+		log.Println(err)
 		return
 	}
-	// fmt.Println("Database Migrated")
-
+	log.Println("Database Migrated")
 }

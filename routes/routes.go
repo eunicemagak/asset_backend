@@ -8,11 +8,19 @@ import (
 
 func RegisterRoutes(api fiber.Router) {
 
-	//Auth
+	// Auth
 	api.Post("/login", controllers.Login)
 	api.Post("/register", controllers.Register)
 	api.Post("/logout", controllers.Logout)
 
+	//Admin
+	adminController := controllers.AdminController{}
+	admins := api.Group("/admin")
+	admins.Get("/", adminController.Index)
+	admins.Post("/", adminController.CreateAdmin)
+	admins.Patch("/:id", adminController.UpdateAdmin)
+	admins.Get("/:id", adminController.GetAdmin)
+	admins.Delete("/:id", adminController.DeleteAdmin)
 	//Users
 	userController := controllers.UserController{}
 	users := api.Group("/users")
@@ -31,15 +39,6 @@ func RegisterRoutes(api fiber.Router) {
 	assets.Get("/:id", assetController.GetAsset)
 	assets.Delete("/:id", assetController.DeleteAsset)
 
-	//Test
-	// testController := controllers.TestController{}
-	// tests := api.Group("/tests")
-	// tests.Get("/", testController.Index)
-	// tests.Post("/", testController.CreateTest)
-	// tests.Patch("/:id", testController.UpdateTest)
-	// tests.Get("/:id", testController.GetTest)
-	// tests.Delete("/:id", testController.DeleteTest)
-
 	//Department
 	departmentController := controllers.DepartmentController{}
 	departments := api.Group("/department")
@@ -50,20 +49,15 @@ func RegisterRoutes(api fiber.Router) {
 	departments.Delete("/:id", departmentController.DeleteDepartment)
 	//Accesories
 	acccesorieController := controllers.AccesorieController{}
-	acccesories := api.Group("/accesories")
+	acccesories := api.Group("/accessories")
 	acccesories.Get("/", acccesorieController.Index)
 	acccesories.Post("/", acccesorieController.CreateAccesorie)
 	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
 	acccesories.Get("/:id", acccesorieController.GetAccesorie)
 	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 
-	//Assign Asset
-	assignController := controllers.AssignController{}
-	assign := api.Group("/assets")
-	assign.Get("/", assignController.Index)
-	assign.Post("/", assignController.AssignAsset)
-	assign.Patch("/:id", assignController.UpdateAssign)
-	assign.Get("/:id", assignController.GetAssign)
-	assign.Delete("/:id", assetController.DeleteAsset)
+	// //Gmail
+	// complainController := controllers.getClient{}
+	// complains := api.Group("/complains")
 
 }
