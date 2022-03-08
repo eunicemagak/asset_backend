@@ -1,13 +1,18 @@
 package models
 
-import (
-	"time"
+// import (
+// 	"gorm.io/gorm"
+// )
 
-	"gorm.io/gorm"
-)
+// type Assign struct {
+// 	gorm.Model
+// 	ID uint `gorm:"primarykey"`
 
-type Assign struct {
-	gorm.Model
+// 	Asset   Asset `json:"asset" gorm:"foreignKey:AssignID;references:ID"`
+// 	AssetID uint  `json:"assetID"`
+// 	User    User  `json:"user" gorm:"foreignKey:AssignID;references:ID"`
+// 	UserID  uint  `json:"assignID"`
+// }
 
 	ID        uint           `gorm:"primarykey"`
 	UserId    uint           `json:"user_id"`
@@ -19,17 +24,11 @@ type Assign struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (assign *Assign) Count(db *gorm.DB) int64 {
-	var total int64
-	db.Model(&Assign{}).Count(&total)
+// func (assign *Assign) Take(db *gorm.DB, limit int, offset int) interface{} {
+// 	var assets []Asset
+// 	var users []User
 
-	return total
-}
+// 	data := db.Offset(offset).Limit(limit).Find(&users, &assets)
 
-func (assign *Assign) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var assets []Asset
-
-	db.Offset(offset).Limit(limit).Find(&assets)
-
-	return assets
-}
+// 	return data
+// }

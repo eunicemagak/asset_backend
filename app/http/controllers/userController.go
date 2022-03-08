@@ -47,9 +47,11 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 		Name:         userReq.Name,
 		Email:        userReq.Email,
 		DepartmentID: userReq.DepartmentID,
+		AccesorieID:  userReq.AccesorieID,
 	}
 
 	// user.SetPassword("1234")
+	asset.IsAssigned = true
 	database.DB.Create(&user)
 
 	database.DB.Model(&user).Association("Assets").Append(&asset)
@@ -65,7 +67,7 @@ func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Find(&user)
+	database.DB.Preload("Assets").Preload("Department").Find(&user)
 
 	return ctx.JSON(user)
 }
@@ -97,7 +99,7 @@ func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Department").Preload("Asset").Delete(&user)
+	database.DB.Preload("Department").Preload("Asset").Preload("Accesorie").Delete(&user)
 
 	return nil
 }

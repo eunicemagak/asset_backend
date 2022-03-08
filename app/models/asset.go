@@ -7,14 +7,15 @@ import (
 )
 
 type Asset struct {
-	ID          uint           `gorm:"id"`
-	Title       string         `json:"title"`
-	Description string         `json:"description"`
-	Image       string         `json:"image"`
-	Price       float64        `json:"price"`
-	CreatedAt   time.Time      `gorm:"index"`
-	UpdatedAt   time.Time      `gorm:"index"`
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	ID           uint      `gorm:"id"`
+	Title        string    `json:"title"`
+	SerialNumber string    `json:"serialnumber"`
+	Description  string    `json:"description"`
+	Image        string    `json:"image"`
+	Price        string    `json:"price"`
+	IsAssigned   bool      `json:"isAssigned" gorm:"default:false"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 func (asset *Asset) Count(db *gorm.DB) int64 {
