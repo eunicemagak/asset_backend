@@ -7,17 +7,20 @@ import (
 )
 
 type User struct {
-	ID         uint           `gorm:"primarykey"`
-	FirstName  string         `json:"first_name"`
-	LastName   string         `json:"last_name"`
-	Email      string         `json:"email" gorm:"unique"`
-	Password   []byte         `json:"-"`
-	Department string         `json:"department"`
-	Assign     string         `json:"assign"`
-	RoleId     uint           `json:"role_id"`
-	CreatedAt  time.Time      `gorm:"index"`
-	UpdatedAt  time.Time      `gorm:"index"`
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	ID    uint   `gorm:"primarykey"`
+	Name  string `json:"name"`
+	Email string `json:"email" gorm:"unique"`
+
+	DepartmentID uint `json:"department_id"`
+	AccesorieID  uint `json:"accessorie_id"`
+
+	Assets     []Asset      `json:"assets" gorm:"many2many:user_assets;"`
+	Department []Department `json:"department" gorm:"many2many" `
+	Accesorie  Accesorie    `jason:"accesorie"`
+
+	CreatedAt time.Time      `gorm:"index"`
+	UpdatedAt time.Time      `gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 // func (user *User) SetPassword(password string) {
