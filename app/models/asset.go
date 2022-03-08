@@ -1,14 +1,20 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Asset struct {
-	ID           uint   `gorm:"id"`
-	Title        string `json:"title"`
-	SerialNumber string `json:"serialnumber"`
-	Description  string `json:"description"`
-	Image        string `json:"image"`
-	Price        string `json:"price"`
+	ID          uint           `gorm:"id"`
+	Title       string         `json:"title"`
+	Description string         `json:"description"`
+	Image       string         `json:"image"`
+	Price       float64        `json:"price"`
+	CreatedAt   time.Time      `gorm:"index"`
+	UpdatedAt   time.Time      `gorm:"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 func (asset *Asset) Count(db *gorm.DB) int64 {

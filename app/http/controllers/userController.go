@@ -6,6 +6,7 @@ import (
 	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
+	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/middlewares"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
 )
@@ -16,7 +17,7 @@ type createUserReq struct {
 	DepartmentID uint   `json:"department_id"`
 	Name         string `json:"name"`
 	AssetID      uint   `json:"assetid"`
-	// AccesoriesID uint   `json:"acccesorieid"`
+	AccesorieID  uint   `json:"acccesorie_id"`
 }
 
 type UserController struct {
@@ -31,12 +32,6 @@ func (c *UserController) Index(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
-	// if err := middlewares.IsAuthenticated()(ctx, "users"); err != nil {
-	// 	return err
-	// }
-	// if err := middlewares.IsAuthenticated(ctx); err != nil {
-	// 	return err
-	// }
 
 	var userReq createUserReq
 	if err := ctx.BodyParser(&userReq); err != nil {
@@ -47,7 +42,12 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	}
 	database.DB.Find(&asset)
 
-	// user.SetPassword("1234")
+	user := models.User{
+		ID:           userReq.ID,
+		Name:         userReq.Name,
+		Email:        userReq.Email,
+		DepartmentID: userReq.DepartmentID,
+	}
 
 	// user.SetPassword("1234")
 	database.DB.Create(&user)
@@ -88,9 +88,9 @@ func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
-	// if err := middlewares.IsAuthenticated(ctx); err != nil {
-	// 	return err
-	// }
+	if err := middlewares.IsAuthenticated(ctx); err != nil {
+		return err
+	}
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
 	user := models.User{

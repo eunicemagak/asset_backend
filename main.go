@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
 	"gitlab.ci.emalify.com/roamtech/asset_be/routes"
@@ -17,11 +16,10 @@ func main() {
 	}
 
 	app := fiber.New()
-	app.Use(cors.New(cors.ConfigDefault))
 	api := app.Group("/api/v1")
 
 	//connect to Database
-	database.ConnectDB()
+	database.Connect()
 	routes.RegisterRoutes(api)
 
 	log.Fatal(app.Listen(":8000"))
