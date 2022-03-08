@@ -7,14 +7,15 @@ import (
 )
 
 type Accesorie struct {
-	ID           uint      `gorm:"id"`
-	Title        string    `json:"title"`
-	SerialNumber string    `json:"serialnumber"`
-	Description  string    `json:"description"`
-	Image        string    `json:"image"`
-	Price        string    `json:"price"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	ID           uint           `gorm:"id"`
+	Title        string         `json:"title"`
+	SerialNumber string         `json:"serialnumber"`
+	Description  string         `json:"description"`
+	Image        string         `json:"image"`
+	Price        string         `json:"price"`
+	CreatedAt    time.Time      `gorm:"index"`
+	UpdatedAt    time.Time      `gorm:"index"`
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }
 
 func (acccesorie *Accesorie) Count(db *gorm.DB) int64 {

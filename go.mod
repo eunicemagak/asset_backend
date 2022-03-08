@@ -2,7 +2,7 @@ module gitlab.ci.emalify.com/roamtech/asset_be
 
 go 1.17
 
-require gorm.io/gorm v1.23.1
+require gorm.io/gorm v1.22.5
 
 require (
 	cloud.google.com/go/compute v1.5.0 // indirect
@@ -52,5 +52,4 @@ require (
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	gorm.io/driver/mysql v1.2.3
-	gorm.io/driver/postgres v1.3.1
 )

@@ -2,37 +2,21 @@ package database
 
 import (
 	"fmt"
-	"log"
-	"strconv"
 
-	"gitlab.ci.emalify.com/roamtech/asset_be/app/config"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
-
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
-// ConnectDB connect to db
-func ConnectDB() {
-	var err error
-	p := config.Config("DB_PORT")
-	port, err := strconv.ParseUint(p, 10, 32)
+func Connect() {
+	//connect to the db and iniatialize the db variable
+	database, err := gorm.Open(mysql.Open("root:@/asset_be"), &gorm.Config{})
 
 	if err != nil {
-		log.Println("cannot get port")
+		panic("Could not connect to the database")
 	}
-
-	// Connection URL to connect to Postgres Database
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s ", config.Config("DB_HOST"), port, config.Config("DB_USER"), config.Config("DB_PASSWORD"), config.Config("DB_NAME"))
-	// Connect to the DB and initialize the DB variable
-	DB, err = gorm.Open(postgres.Open(dsn))
-
-	if err != nil {
-		panic("failed to connect database")
-	}
-
 	fmt.Println("Connection Opened to Database")
 
 	// Migrate the database

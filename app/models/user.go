@@ -11,16 +11,25 @@ type User struct {
 	Name  string `json:"name"`
 	Email string `json:"email" gorm:"unique"`
 
-	DepartmentID uint      `json:"department_id"`
-	AccesorieID  uint      `json:"accesorie_id"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	DepartmentID uint `json:"department_id"`
+	AccesorieID  uint `json:"accessorie_id"`
 
-	Assets     []Asset    `json:"assets" gorm:"many2many:user_assets;"`
-	Department Department `json:"department" `
-	Accesorie  Accesorie  `json:"accesorie"`
+	Assets     []Asset      `json:"assets" gorm:"many2many:user_assets;"`
+	Department []Department `json:"department" gorm:"many2many" `
+	Accesorie  Accesorie    `jason:"accesorie"`
+
+	CreatedAt time.Time      `gorm:"index"`
+	UpdatedAt time.Time      `gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
+// func (user *User) SetPassword(password string) {
+// 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
+// 	user.Password = hashedPassword
+// }
+
+// func (user *User) ComparePassword(password string) error {
+// 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 // }
 
 func (user *User) Count(db *gorm.DB) int64 {
