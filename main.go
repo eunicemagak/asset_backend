@@ -19,7 +19,7 @@ func main() {
 	api := app.Group("/api/v1")
 
 	//connect to Database
-	database.Connect()
+	database.ConnectDB()
 	routes.RegisterRoutes(api)
 
 	log.Fatal(app.Listen(":8000"))
