@@ -40,6 +40,7 @@ func (c *AdminController) CreateAdmin(ctx *fiber.Ctx) error {
 	}
 
 	database.DB.Create(&admin)
+
 	return ctx.JSON(admin)
 
 }

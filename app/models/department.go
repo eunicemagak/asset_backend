@@ -1,10 +1,18 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Department struct {
-	ID    uint   `gorm:"id"`
-	Title string `json:"title"`
+	ID        uint           `gorm:"id"`
+	Title     string         `json:"title"`
+	UserName  string         `json:"name"`
+	CreatedAt time.Time      `gorm:"index"`
+	UpdatedAt time.Time      `gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (department *Department) Count(db *gorm.DB) int64 {

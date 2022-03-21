@@ -5,8 +5,8 @@ go 1.17
 require gorm.io/gorm v1.23.1
 
 require (
-	github.com/aliyun/aliyun-oss-go-sdk v2.2.1+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -16,9 +16,8 @@ require (
 	github.com/jackc/pgtype v1.9.1 // indirect
 	github.com/jackc/pgx/v4 v4.14.1 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
-	github.com/lib/pq v1.10.4 // indirect
+	github.com/rs/xid v1.3.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/time v0.0.0-20220224211638-0e9765cccd65 // indirect
 )
 
 require (

@@ -14,11 +14,14 @@ func main() {
 	//load .env file
 	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal("Error loading .env file")
+
 	}
 
 	app := fiber.New()
-	app.Use(cors.New(cors.ConfigDefault))
 	api := app.Group("/api/v1")
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: false,
+	}))
 
 	//connect to Database
 	database.ConnectDB()

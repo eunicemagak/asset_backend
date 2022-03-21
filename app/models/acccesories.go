@@ -1,14 +1,21 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Accesorie struct {
-	ID           uint   `gorm:"id"`
-	Title        string `json:"title"`
-	SerialNumber string `json:"serialnumber"`
-	Description  string `json:"description"`
-	Image        string `json:"image"`
-	Price        string `json:"price"`
+	ID           uint           `gorm:"id"`
+	Title        string         `json:"title"`
+	SerialNumber string         `json:"serialnumber"`
+	Description  string         `json:"description"`
+	Image        string         `json:"image"`
+	Price        string         `json:"price"`
+	CreatedAt    time.Time      `gorm:"index"`
+	UpdatedAt    time.Time      `gorm:"index"`
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }
 
 func (acccesorie *Accesorie) Count(db *gorm.DB) int64 {
@@ -23,5 +30,5 @@ func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{
 
 	db.Offset(offset).Limit(limit).Find(&acccesories)
 
-	return acccesorie
+	return acccesories
 }
