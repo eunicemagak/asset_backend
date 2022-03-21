@@ -7,12 +7,10 @@ import (
 )
 
 type Department struct {
-	ID        uint           `gorm:"id"`
-	Title     string         `json:"title"`
-	UserName  string         `json:"name"`
-	CreatedAt time.Time      `gorm:"index"`
-	UpdatedAt time.Time      `gorm:"index"`
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID        uint      `gorm:"id"`
+	Title     string    `json:"title"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (department *Department) Count(db *gorm.DB) int64 {

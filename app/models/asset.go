@@ -11,9 +11,14 @@ type Asset struct {
 	Title        string    `json:"title"`
 	SerialNumber string    `json:"serialnumber"`
 	Description  string    `json:"description"`
+<<<<<<< HEAD
 	Price        string    `json:"price"`
 	ImageID      uint      `json:"image_id"`
 	ImageType    string    `json:"image_type"`
+=======
+	Image        string    `json:"image"`
+	Price        string    `json:"price"`
+>>>>>>> 2fe1552807d5a5c090e33e8e4898e3f5753702b8
 	IsAssigned   bool      `json:"isAssigned" gorm:"default:false"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`

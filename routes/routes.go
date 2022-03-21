@@ -16,7 +16,7 @@ func RegisterAssetsRoutes(api fiber.Router) {
 
 func RegisterRoutes(api fiber.Router) {
 
-	//Auth
+	// Auth
 	api.Post("/login", controllers.Login)
 	api.Post("/register", controllers.Register)
 	api.Post("/logout", controllers.Logout)
@@ -80,5 +80,9 @@ func RegisterRoutes(api fiber.Router) {
 	images.Post("/", ImageController.Upload)   // handle image uploading using post request
 	images.Delete("/", ImageController.Delete) // handle image deletion using delete request
 	images.Static("/uploads/", "./resources/uploads")
+
+	// //Gmail
+	// complainController := controllers.getClient{}
+	// complains := api.Group("/complains")
 
 }

@@ -51,6 +51,7 @@ func ConnectDB() {
 	if err != nil {
 		log.Println("cannot get port")
 	}
+<<<<<<< HEAD
 
 	// Connection URL to connect to Postgres Database
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s ", config.Config("DB_HOST"), port, config.Config("DB_USER"), config.Config("DB_PASSWORD"), config.Config("DB_NAME"))
@@ -70,6 +71,26 @@ func ConnectDB() {
 
 func AutoMigrate() {
 	err := DB.AutoMigrate(&models.Admin{}, &models.User{}, &models.Department{}, &models.Asset{}, &models.Accesorie{}, &models.Image{})
+=======
+
+	// Connection URL to connect to Postgres Database
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s ", config.Config("DB_HOST"), port, config.Config("DB_USER"), config.Config("DB_PASSWORD"), config.Config("DB_NAME"))
+	// Connect to the DB and initialize the DB variable
+	DB, err = gorm.Open(postgres.Open(dsn))
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	fmt.Println("Connection Opened to Database")
+
+	// Migrate the database
+	DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Role{}, &models.Accesorie{}, &models.Department{}, &models.Admin{})
+}
+
+func AutoMigrate() {
+	err := DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Accesorie{}, &models.Department{}, &models.Admin{})
+>>>>>>> 2fe1552807d5a5c090e33e8e4898e3f5753702b8
 	if err != nil {
 		log.Println(err)
 		return

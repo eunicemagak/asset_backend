@@ -43,7 +43,10 @@ func (user *User) Count(db *gorm.DB) int64 {
 func (user *User) Take(db *gorm.DB, limit int, offset int) interface{} {
 	var users []User
 
+<<<<<<< HEAD
 	// db.Offset(offset).Limit(limit).Find(&users)
+=======
+>>>>>>> 2fe1552807d5a5c090e33e8e4898e3f5753702b8
 	db.Preload("Assets").Preload("Department").Preload("Accesorie").Offset(offset).Limit(limit).Find(&users)
 
 	return users

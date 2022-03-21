@@ -1,4 +1,5 @@
 package models
+<<<<<<< HEAD
 
 import (
 	"time"
@@ -33,3 +34,5 @@ func (image *Image) Take(db *gorm.DB, limit int, offset int) interface{} {
 
 	return images
 }
+=======
+>>>>>>> 2fe1552807d5a5c090e33e8e4898e3f5753702b8
