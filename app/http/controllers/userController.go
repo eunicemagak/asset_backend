@@ -17,7 +17,7 @@ type createUserReq struct {
 	DepartmentID uint   `json:"department_id"`
 	Name         string `json:"name"`
 	AssetID      uint   `json:"assetid"`
-	AccesorieID  uint   `json:"acccesorie_id"`
+	// AccesorieID  uint   `json:"accessorie_id"`
 }
 
 type UserController struct {
@@ -40,26 +40,31 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	asset := models.Asset{
 		ID: userReq.AssetID,
 	}
+	asset.IsAssigned = true
 	database.DB.Find(&asset)
+	asset.IsAssigned = true
 
 	user := models.User{
 		ID:           userReq.ID,
 		Name:         userReq.Name,
 		Email:        userReq.Email,
 		DepartmentID: userReq.DepartmentID,
-		AccesorieID:  userReq.AccesorieID,
 	}
 
 	// user.SetPassword("1234")
-	asset.IsAssigned = true
+
 	database.DB.Create(&user)
+	asset.IsAssigned = true
 
 	database.DB.Model(&user).Association("Assets").Append(&asset)
 
 	return ctx.JSON(&user)
+
 }
 
 func (c *UserController) GetUser(ctx *fiber.Ctx) error {
+	var asset models.Asset
+	asset.IsAssigned = true
 
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
@@ -70,6 +75,7 @@ func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 	database.DB.Preload("Assets").Preload("Department").Find(&user)
 
 	return ctx.JSON(user)
+
 }
 
 func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
@@ -99,7 +105,7 @@ func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Department").Preload("Asset").Preload("Accesorie").Delete(&user)
+	database.DB.Preload("Department").Preload("Asset").Delete(&user)
 
 	return nil
 }

@@ -1,72 +1,72 @@
 package controllers
 
-import (
-	"database/sql"
-	"strconv"
+// import (
+// 	"database/sql"
+// 	"strconv"
 
-	"github.com/gofiber/fiber/v2"
-	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
-	"gitlab.ci.emalify.com/roamtech/asset_be/database"
-)
+// 	"github.com/gofiber/fiber/v2"
+// 	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
+// 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
+// )
 
-type AccesorieController struct {
-	DB *sql.DB
-}
+// type AccessoryController struct {
+// 	DB *sql.DB
+// }
 
-func (c *AccesorieController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+// func (c *AccessoryController) Index(ctx *fiber.Ctx) error {
+// 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Accesorie{}, page))
-}
+// 	return ctx.JSON(models.Paginate(database.DB, &models.Accessory{}, page))
+// }
 
-func (c *AccesorieController) CreateAccesorie(ctx *fiber.Ctx) error {
-	var acccesories models.Accesorie
+// func (c *AccessoryController) CreateAccesorie(ctx *fiber.Ctx) error {
+// 	var acccesories models.Accessory
 
-	if err := ctx.BodyParser(&acccesories); err != nil {
-		return err
-	}
+// 	if err := ctx.BodyParser(&acccesories); err != nil {
+// 		return err
+// 	}
 
-	database.DB.Create(&acccesories)
+// 	database.DB.Create(&acccesories)
 
-	return ctx.JSON(acccesories)
-}
+// 	return ctx.JSON(acccesories)
+// }
 
-func (c *AccesorieController) GetAccesorie(ctx *fiber.Ctx) error {
-	id, _ := strconv.Atoi(ctx.Params("id"))
+// func (c *AccessoryController) GetAccesorie(ctx *fiber.Ctx) error {
+// 	id, _ := strconv.Atoi(ctx.Params("id"))
 
-	acccesorie := models.Accesorie{
-		ID: uint(id),
-	}
+// 	acccesorie := models.Accessory{
+// 		ID: uint(id),
+// 	}
 
-	database.DB.Find(&acccesorie)
+// 	database.DB.Find(&acccesorie)
 
-	return ctx.JSON(acccesorie)
-}
+// 	return ctx.JSON(acccesorie)
+// }
 
-func (c *AccesorieController) UpdateAccesorie(ctx *fiber.Ctx) error {
-	id, _ := strconv.Atoi(ctx.Params("id"))
+// func (c *AccessoryController) UpdateAccesorie(ctx *fiber.Ctx) error {
+// 	id, _ := strconv.Atoi(ctx.Params("id"))
 
-	acccesorie := models.Accesorie{
-		ID: uint(id),
-	}
+// 	acccesorie := models.Accessory{
+// 		ID: uint(id),
+// 	}
 
-	if err := ctx.BodyParser(&acccesorie); err != nil {
-		return err
-	}
+// 	if err := ctx.BodyParser(&acccesorie); err != nil {
+// 		return err
+// 	}
 
-	database.DB.Model(&acccesorie).Updates(acccesorie)
+// 	database.DB.Model(&acccesorie).Updates(acccesorie)
 
-	return ctx.JSON(acccesorie)
-}
+// 	return ctx.JSON(acccesorie)
+// }
 
-func (c *AccesorieController) DeleteAccesorie(ctx *fiber.Ctx) error {
-	id, _ := strconv.Atoi(ctx.Params("id"))
+// func (c *AccessoryController) DeleteAccesorie(ctx *fiber.Ctx) error {
+// 	id, _ := strconv.Atoi(ctx.Params("id"))
 
-	acccesorie := models.Accesorie{
-		ID: uint(id),
-	}
+// 	acccesorie := models.Accessory{
+// 		ID: uint(id),
+// 	}
 
-	database.DB.Delete(&acccesorie)
+// 	database.DB.Delete(&acccesorie)
 
-	return nil
-}
+// 	return nil
+// }

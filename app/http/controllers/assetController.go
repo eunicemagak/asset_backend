@@ -26,6 +26,13 @@ func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
 		return err
 	}
 
+	//select from images where name=%asset.ImageType%
+	var image models.Image
+	// fmt.Printf(" asset-image type %v", asset.ImageType)
+	database.DB.Where("image_type = ?", asset.ImageType).First(&image)
+	// fmt.Printf(" image %v", image)
+	asset.ImageType = image.ImageType
+	asset.ImageID = image.ID
 	database.DB.Create(&asset)
 
 	return ctx.JSON(asset)

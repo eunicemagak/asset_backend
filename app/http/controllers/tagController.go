@@ -1,0 +1,72 @@
+package controllers
+
+import (
+	"database/sql"
+	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
+	"gitlab.ci.emalify.com/roamtech/asset_be/database"
+)
+
+type TagController struct {
+	DB *sql.DB
+}
+
+func (c *TagController) Index(ctx *fiber.Ctx) error {
+	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+
+	return ctx.JSON(models.Paginate(database.DB, &models.Tag{}, page))
+}
+
+func (c *TagController) CreateDepartment(ctx *fiber.Ctx) error {
+	var tag models.Tag
+
+	if err := ctx.BodyParser(&tag); err != nil {
+		return err
+	}
+
+	database.DB.Create(&tag)
+
+	return ctx.JSON(tag)
+}
+
+func (c *TagController) GetTag(ctx *fiber.Ctx) error {
+	id, _ := strconv.Atoi(ctx.Params("id"))
+
+	tag := models.Tag{
+		ID: uint(id),
+	}
+
+	database.DB.Find(&tag)
+
+	return ctx.JSON(tag)
+}
+
+func (c *TagController) UpdateTag(ctx *fiber.Ctx) error {
+	id, _ := strconv.Atoi(ctx.Params("id"))
+
+	tag := models.Tag{
+		ID: uint(id),
+	}
+
+	if err := ctx.BodyParser(&tag); err != nil {
+		return err
+	}
+
+	database.DB.Model(&tag).Updates(tag)
+
+	return ctx.JSON(tag)
+}
+
+func (c *TagController) DeleteTag(ctx *fiber.Ctx) error {
+	id, _ := strconv.Atoi(ctx.Params("id"))
+
+	tag := models.Tag{
+		ID: uint(id),
+	}
+
+	database.DB.Delete(&tag)
+
+	return nil
+}

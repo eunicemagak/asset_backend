@@ -7,13 +7,6 @@ import (
 	// "github.com/dgrijalva/jwt-go/v4"
 )
 
-/*
-func RegisterAssetsRoutes(api fiber.Router) {
-	assetController := controllers.AssetController{}
-	api.Get("/assets/index", assetController.Index)
-}
-*/
-
 func RegisterRoutes(api fiber.Router) {
 
 	// Auth
@@ -43,10 +36,14 @@ func RegisterRoutes(api fiber.Router) {
 	assetController := controllers.AssetController{}
 	assets := api.Group("/assets", middlewares.IsAuthenticated)
 	assets.Get("/", assetController.Index)
+	// assets.Post("/", assetController.UploadImage)
 	assets.Post("/", assetController.CreateAsset)
-	assets.Patch("/:id", assetController.UpdateAsset)
-	assets.Get("/:id", assetController.GetAsset)
-	assets.Delete("/:id", assetController.DeleteAsset)
+
+	//Images
+	imageController := controllers.ImageController{}
+	images := api.Group("/images", middlewares.IsAuthenticated)
+	images.Get("/", imageController.Index)
+	images.Post("/", imageController.Upload)
 
 	//Complaints
 	//complaintController := controllers.ComplaintController{}
@@ -66,13 +63,13 @@ func RegisterRoutes(api fiber.Router) {
 	departments.Delete("/:id", departmentController.DeleteDepartment)
 
 	//Accesories
-	acccesorieController := controllers.AccesorieController{}
-	acccesories := api.Group("/accessories")
-	acccesories.Get("/", acccesorieController.Index)
-	acccesories.Post("/", acccesorieController.CreateAccesorie)
-	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
-	acccesories.Get("/:id", acccesorieController.GetAccesorie)
-	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
+	// acccesorieController := controllers.AccessoryController{}
+	// acccesories := api.Group("/accessories")
+	// acccesories.Get("/", acccesorieController.Index)
+	// acccesories.Post("/", acccesorieController.CreateAccesorie)
+	// acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
+	// acccesories.Get("/:id", acccesorieController.GetAccesorie)
+	// acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 
 	// //Gmail
 	// complainController := controllers.getClient{}
