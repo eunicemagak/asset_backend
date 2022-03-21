@@ -7,14 +7,16 @@ import (
 )
 
 type Asset struct {
-	ID          uint           `gorm:"id"`
-	Title       string         `json:"title"`
-	Description string         `json:"description"`
-	Image       string         `json:"image"`
-	Price       float64        `json:"price"`
-	CreatedAt   time.Time      `gorm:"index"`
-	UpdatedAt   time.Time      `gorm:"index"`
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	ID           uint      `gorm:"id"`
+	Title        string    `json:"title"`
+	SerialNumber string    `json:"serialnumber"`
+	Description  string    `json:"description"`
+	Price        string    `json:"price"`
+	ImageID      uint      `json:"image_id"`
+	ImageType    string    `json:"image_type"`
+	IsAssigned   bool      `json:"isAssigned" gorm:"default:false"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 func (asset *Asset) Count(db *gorm.DB) int64 {
@@ -27,7 +29,7 @@ func (asset *Asset) Count(db *gorm.DB) int64 {
 func (asset *Asset) Take(db *gorm.DB, limit int, offset int) interface{} {
 	var assets []Asset
 
-	db.Offset(offset).Limit(limit).Find(&assets)
+	db.Offset(offset).Limit(limit).Preload("Images").Find(&assets)
 
 	return assets
 }

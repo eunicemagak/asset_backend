@@ -47,6 +47,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 		Name:         userReq.Name,
 		Email:        userReq.Email,
 		DepartmentID: userReq.DepartmentID,
+		AccesorieID:  userReq.AccesorieID,
 	}
 
 	// user.SetPassword("1234")
