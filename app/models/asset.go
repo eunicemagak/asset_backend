@@ -14,7 +14,7 @@ type Asset struct {
 	Price        string    `json:"price"`
 	ImageID      uint      `json:"image_id"`
 	ImageType    string    `json:"image_type"`
-	IsAssigned   bool      `json:"isAssigned" gorm:"default:false"`
+	IsAssigned   bool      `json:"is_assigned" gorm:"default:false"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }

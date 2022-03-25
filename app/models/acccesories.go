@@ -1,34 +1,34 @@
 package models
 
-// import (
-// 	"time"
+import (
+	"time"
 
-// 	"gorm.io/gorm"
-// )
+	"gorm.io/gorm"
+)
 
-// type Accessory struct {
-// 	ID           uint           `gorm:"id"`
-// 	Title        string         `json:"title"`
-// 	SerialNumber string         `json:"serialnumber"`
-// 	Description  string         `json:"description"`
-// 	Image        string         `json:"image"`
-// 	Price        string         `json:"price"`
-// 	CreatedAt    time.Time      `gorm:"index"`
-// 	UpdatedAt    time.Time      `gorm:"index"`
-// 	DeletedAt    gorm.DeletedAt `gorm:"index"`
-// }
+type Accesorie struct {
+	ID           uint      `gorm:"id"`
+	Title        string    `json:"title"`
+	SerialNumber string    `json:"serialnumber"`
+	Description  string    `json:"description"`
+	ImageID      uint      `json:"image_id"`
+	ImageType    string    `json:"image_type"`
+	Price        string    `json:"price"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+}
 
-// func (acccesorie *Accessory) Count(db *gorm.DB) int64 {
-// 	var total int64
-// 	db.Model(&Accessory{}).Count(&total)
+func (acccesorie *Accesorie) Count(db *gorm.DB) int64 {
+	var total int64
+	db.Model(&Accesorie{}).Count(&total)
 
-// 	return total
-// }
+	return total
+}
 
-// func (accessory *Accessory) Take(db *gorm.DB, limit int, offset int) interface{} {
-// 	var accessories []Accessory
+func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{} {
+	var acccesories []Accesorie
 
-// 	db.Offset(offset).Limit(limit).Find(&accessories)
+	db.Offset(offset).Limit(limit).Preload("Images").Find(&acccesories)
 
-// 	return accessories
-// }
+	return acccesories
+}

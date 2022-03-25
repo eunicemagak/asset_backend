@@ -1,23 +1,22 @@
 package controllers
 
 import (
+	"fmt"
 	"strconv"
 
 	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
-	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/middlewares"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/models"
 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
 )
 
 type createUserReq struct {
-	ID           uint   `json:"id"`
-	Email        string `json:"email"`
-	DepartmentID uint   `json:"department_id"`
-	Name         string `json:"name"`
-	AssetID      uint   `json:"assetid"`
-	// AccesorieID  uint   `json:"accessorie_id"`
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
+
+	Name    string `json:"name"`
+	AssetID uint   `json:"asset_id"`
 }
 
 type UserController struct {
@@ -34,37 +33,43 @@ func (c *UserController) Index(ctx *fiber.Ctx) error {
 func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 
 	var userReq createUserReq
+
 	if err := ctx.BodyParser(&userReq); err != nil {
 		return err
+
 	}
+	fmt.Printf(" Userreq %v userreq \n", userReq)
+
 	asset := models.Asset{
 		ID: userReq.AssetID,
 	}
-	asset.IsAssigned = true
 	database.DB.Find(&asset)
-	asset.IsAssigned = true
+	fmt.Printf("log asset %v", asset)
 
 	user := models.User{
-		ID:           userReq.ID,
-		Name:         userReq.Name,
-		Email:        userReq.Email,
-		DepartmentID: userReq.DepartmentID,
+		ID:    userReq.ID,
+		Name:  userReq.Name,
+		Email: userReq.Email,
 	}
 
-	// user.SetPassword("1234")
+	// Update with conditions and model value
 
-	database.DB.Create(&user)
 	asset.IsAssigned = true
+	result := database.DB.Model(&asset).Where("id = ?", userReq.AssetID).Update("is_assigned", true)
+
+	if result.Error != nil {
+		fmt.Printf("Error in updating %v", result.Error)
+		//return result.Error
+	}
+	fmt.Printf(" asset after update %v", asset)
+	database.DB.Create(&user)
 
 	database.DB.Model(&user).Association("Assets").Append(&asset)
 
 	return ctx.JSON(&user)
-
 }
 
 func (c *UserController) GetUser(ctx *fiber.Ctx) error {
-	var asset models.Asset
-	asset.IsAssigned = true
 
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
@@ -72,10 +77,8 @@ func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Assets").Preload("Department").Find(&user)
-
+	database.DB.Preload("Assets").Preload("Department").Preload(" Accesorie").Preload("Tag").Preload("").Find(&user)
 	return ctx.JSON(user)
-
 }
 
 func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
@@ -96,16 +99,16 @@ func (c *UserController) UpdateUser(ctx *fiber.Ctx) error {
 }
 
 func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
-	if err := middlewares.IsAuthenticated(ctx); err != nil {
-		return err
-	}
+	// if err := middlewares.IsAuthenticated(ctx); err != nil {
+	// 	return err
+	// }
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
 	user := models.User{
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Department").Preload("Asset").Delete(&user)
+	database.DB.Preload("Department").Preload("Asset").Preload("Accesorie").Delete(&user)
 
 	return nil
 }

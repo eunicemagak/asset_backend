@@ -24,6 +24,11 @@ func (admin *Admin) SetPassword(password string) {
 	admin.Password = hashedPassword
 }
 
+// func (user *User) ComparePassword(password string) error {
+// 	return bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+// }
+
+// ComparePassword: Check if the provided password is correct or not
 func (admin *Admin) ComparePassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
 }

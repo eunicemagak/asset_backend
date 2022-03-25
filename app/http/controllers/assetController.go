@@ -14,9 +14,20 @@ type AssetController struct {
 }
 
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Asset{}, page))
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	var asset []models.Asset
+	// Get first matched record
+	database.DB.Where("is_assigned = ?", false).Find(&asset)
+	// if len(asset.Title) > 0 {
+	// 	return ctx.JSON(asset)
+	// } else {
+	// 	fmt.Print(" empty list")
+
+	// }
+	return ctx.JSON(&asset)
+
+	// return ctx.JSON(asset)
 }
 
 func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {

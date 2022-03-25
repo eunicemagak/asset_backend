@@ -3,7 +3,6 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/controllers"
-	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/middlewares"
 	// "github.com/dgrijalva/jwt-go/v4"
 )
 
@@ -22,10 +21,9 @@ func RegisterRoutes(api fiber.Router) {
 	admins.Patch("/:id", adminController.UpdateAdmin)
 	admins.Get("/:id", adminController.GetAdmin)
 	admins.Delete("/:id", adminController.DeleteAdmin)
-
 	//Users
 	userController := controllers.UserController{}
-	users := api.Group("/users", middlewares.IsAuthenticated)
+	users := api.Group("/users")
 	users.Get("/", userController.Index)
 	users.Post("/", userController.CreateUser)
 	users.Patch("/:id", userController.UpdateUser)
@@ -34,24 +32,12 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Assets
 	assetController := controllers.AssetController{}
-	assets := api.Group("/assets", middlewares.IsAuthenticated)
+	assets := api.Group("/assets")
 	assets.Get("/", assetController.Index)
-	// assets.Post("/", assetController.UploadImage)
 	assets.Post("/", assetController.CreateAsset)
-
-	//Images
-	imageController := controllers.ImageController{}
-	images := api.Group("/images", middlewares.IsAuthenticated)
-	images.Get("/", imageController.Index)
-	images.Post("/", imageController.Upload)
-
-	//Complaints
-	//complaintController := controllers.ComplaintController{}
-	// api.Get("/complaints", complaintController.Index)
-	// api.Post("/complaints", complaintController.CreateComplaint)
-	// api.Patch("/complaints/:id", complaintController.UpdateComplaint)
-	// api.Get("/complaints/:id", complaintController.GetComplaint)
-	// api.Delete("/complaints/:id", complaintController.DeleteComplaint)
+	assets.Patch("/:id", assetController.UpdateAsset)
+	assets.Get("/:id", assetController.GetAsset)
+	assets.Delete("/:id", assetController.DeleteAsset)
 
 	//Department
 	departmentController := controllers.DepartmentController{}
@@ -61,18 +47,38 @@ func RegisterRoutes(api fiber.Router) {
 	departments.Patch("/:id", departmentController.UpdateDepartment)
 	departments.Get("/:id", departmentController.GetDepartment)
 	departments.Delete("/:id", departmentController.DeleteDepartment)
-
 	//Accesories
-	// acccesorieController := controllers.AccessoryController{}
-	// acccesories := api.Group("/accessories")
-	// acccesories.Get("/", acccesorieController.Index)
-	// acccesories.Post("/", acccesorieController.CreateAccesorie)
-	// acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
-	// acccesories.Get("/:id", acccesorieController.GetAccesorie)
-	// acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
+	acccesorieController := controllers.AccesorieController{}
+	acccesories := api.Group("/accessories")
+	acccesories.Get("/", acccesorieController.Index)
+	acccesories.Post("/", acccesorieController.CreateAccesorie)
+	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
+	acccesories.Get("/:id", acccesorieController.GetAccesorie)
+	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 
-	// //Gmail
-	// complainController := controllers.getClient{}
-	// complains := api.Group("/complains")
+	//Tag
+	tagController := controllers.TagController{}
+	tags := api.Group("/tags")
+	tags.Get("/", tagController.Index)
+	tags.Post("/", tagController.CreateTag)
+	tags.Patch("/:id", tagController.UpdateTag)
+	tags.Get("/:id", tagController.GetTag)
+	tags.Delete("/:id", tagController.DeleteTagt)
+
+	//Status
+	statusController := controllers.StatusController{}
+	status := api.Group("/status")
+	status.Get("/", statusController.Index)
+	status.Post("/", statusController.CreateStatus)
+	status.Patch("/:id", statusController.UpdateStatus)
+	status.Get("/:id", statusController.GetStatus)
+	status.Delete("/:id", statusController.DeleteStatus)
+
+	//Image
+	imageController := controllers.ImageController{}
+	images := api.Group("/images")
+	images.Get("/", imageController.Index)
+	images.Post("/", imageController.Upload)
+	images.Delete("/:id", imageController.Delete)
 
 }

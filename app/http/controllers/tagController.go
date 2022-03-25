@@ -19,7 +19,7 @@ func (c *TagController) Index(ctx *fiber.Ctx) error {
 	return ctx.JSON(models.Paginate(database.DB, &models.Tag{}, page))
 }
 
-func (c *TagController) CreateDepartment(ctx *fiber.Ctx) error {
+func (c *TagController) CreateTag(ctx *fiber.Ctx) error {
 	var tag models.Tag
 
 	if err := ctx.BodyParser(&tag); err != nil {
@@ -59,7 +59,7 @@ func (c *TagController) UpdateTag(ctx *fiber.Ctx) error {
 	return ctx.JSON(tag)
 }
 
-func (c *TagController) DeleteTag(ctx *fiber.Ctx) error {
+func (c *TagController) DeleteTagt(ctx *fiber.Ctx) error {
 	id, _ := strconv.Atoi(ctx.Params("id"))
 
 	tag := models.Tag{
