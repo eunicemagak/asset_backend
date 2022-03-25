@@ -56,8 +56,29 @@ func RegisterRoutes(api fiber.Router) {
 	acccesories.Get("/:id", acccesorieController.GetAccesorie)
 	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 
-	// //Gmail
-	// complainController := controllers.getClient{}
-	// complains := api.Group("/complains")
+	//Tag
+	tagController := controllers.TagController{}
+	tags := api.Group("/tags")
+	tags.Get("/", tagController.Index)
+	tags.Post("/", tagController.CreateTag)
+	tags.Patch("/:id", tagController.UpdateTag)
+	tags.Get("/:id", tagController.GetTag)
+	tags.Delete("/:id", tagController.DeleteTagt)
+
+	//Status
+	statusController := controllers.StatusController{}
+	status := api.Group("/status")
+	status.Get("/", statusController.Index)
+	status.Post("/", statusController.CreateStatus)
+	status.Patch("/:id", statusController.UpdateStatus)
+	status.Get("/:id", statusController.GetStatus)
+	status.Delete("/:id", statusController.DeleteStatus)
+
+	//Image
+	imageController := controllers.ImageController{}
+	images := api.Group("/images")
+	images.Get("/", imageController.Index)
+	images.Post("/", imageController.Upload)
+	images.Delete("/:id", imageController.Delete)
 
 }

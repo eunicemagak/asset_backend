@@ -11,17 +11,13 @@ type User struct {
 	Name  string `json:"name"`
 	Email string `json:"email" gorm:"unique"`
 
-	DepartmentID uint      `json:"department_id"`
-	AccesorieID  uint      `json:"accesorie_id"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
-
-	Assets     []Asset    `json:"assets" gorm:"many2many:user_assets;"`
-	Department Department `json:"department" `
-	Accesorie  Accesorie  `json:"accesorie"`
+	CreatedAt   time.Time    `json:"created_at"`
+	UpdatedAt   time.Time    `json:"updated_at"`
+	Assets      []Asset      `json:"assets" gorm:"many2many:user_assets;"`
+	Tags        []Tag        `json:"tags" gorm:"many2many:user_tags;"`
+	Assesories  []Accesorie  `json:"assesories" gorm:"many2many:user_assesories;"`
+	Departments []Department `json:"department" gorm:"many2many:user_department;"`
 }
-
-// }
 
 func (user *User) Count(db *gorm.DB) int64 {
 	var total int64
@@ -34,7 +30,7 @@ func (user *User) Count(db *gorm.DB) int64 {
 func (user *User) Take(db *gorm.DB, limit int, offset int) interface{} {
 	var users []User
 
-	db.Preload("Assets").Preload("Department").Preload("Accesorie").Offset(offset).Limit(limit).Find(&users)
+	db.Preload("Assets").Preload("Tags").Preload("Assesories").Preload("Department").Offset(offset).Limit(limit).Find(&users)
 
 	return users
 }

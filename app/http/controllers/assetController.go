@@ -14,9 +14,18 @@ type AssetController struct {
 }
 
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Asset{}, page))
+	var asset []models.Asset
+	// Get first matched record
+	database.DB.Where("is_assigned = ?", false).Preload("Images").Find(&asset)
+	// if len(asset.Title) > 0 {
+	// 	return ctx.JSON(asset)
+	// } else {
+	// 	fmt.Print(" empty list")
+
+	// }
+	return ctx.JSON(&asset)
+
 }
 
 func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
@@ -26,6 +35,13 @@ func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
 		return err
 	}
 
+	//select from images where name=%asset.ImageType%
+	var image models.Image
+	// fmt.Printf(" asset-image type %v", asset.ImageType)
+	database.DB.Where("image_type = ?", asset.ImageType).First(&image)
+	// fmt.Printf(" image %v", image)
+	asset.ImageType = image.ImageType
+	asset.ImageID = image.ID
 	database.DB.Create(&asset)
 
 	return ctx.JSON(asset)

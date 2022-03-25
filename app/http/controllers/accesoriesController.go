@@ -14,9 +14,12 @@ type AccesorieController struct {
 }
 
 func (c *AccesorieController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Accesorie{}, page))
+	var acccesorie []models.Accesorie
+	// Get first matched record
+	database.DB.Where("is_assigned = ?", false).Preload("Images").Find(&acccesorie)
+
+	return ctx.JSON(&acccesorie)
 }
 
 func (c *AccesorieController) CreateAccesorie(ctx *fiber.Ctx) error {
@@ -25,6 +28,13 @@ func (c *AccesorieController) CreateAccesorie(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(&acccesories); err != nil {
 		return err
 	}
+	//select from images where name=%asset.ImageType%
+	var image models.Image
+	// fmt.Printf(" asset-image type %v", asset.ImageType)
+	database.DB.Where("image_type = ?", acccesories.ImageType).First(&image)
+	// fmt.Printf(" image %v", image)
+	acccesories.ImageType = image.ImageType
+	acccesories.ImageID = image.ID
 
 	database.DB.Create(&acccesories)
 
