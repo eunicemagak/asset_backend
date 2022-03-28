@@ -14,9 +14,12 @@ type AccesorieController struct {
 }
 
 func (c *AccesorieController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Accesorie{}, page))
+	var acccesorie []models.Accesorie
+	// Get first matched record
+	database.DB.Where("is_assigned = ?", false).Preload("Images").Find(&acccesorie)
+
+	return ctx.JSON(&acccesorie)
 }
 
 func (c *AccesorieController) CreateAccesorie(ctx *fiber.Ctx) error {

@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Asset struct {
@@ -19,17 +17,17 @@ type Asset struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-func (asset *Asset) Count(db *gorm.DB) int64 {
-	var total int64
-	db.Model(&Asset{}).Count(&total)
+// func (asset *Asset) Count(db *gorm.DB) int64 {
+// 	var total int64
+// 	db.Model(&Asset{}).Count(&total)
 
-	return total
-}
+// 	return total
+// }
 
-func (asset *Asset) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var assets []Asset
+// func (asset *Asset) Take(db *gorm.DB, limit int, offset int) interface{} {
+// 	var assets []Asset
 
-	db.Offset(offset).Limit(limit).Preload("Images").Find(&assets)
+// 	db.Offset(offset).Limit(limit).Preload("Images").Find(&assets)
 
-	return assets
-}
+// 	return assets
+// }
