@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/controllers"
+	"gitlab.ci.emalify.com/roamtech/asset_be/app/http/middlewares"
 	// "github.com/dgrijalva/jwt-go/v4"
 )
 
@@ -23,7 +24,7 @@ func RegisterRoutes(api fiber.Router) {
 	admins.Delete("/:id", adminController.DeleteAdmin)
 	//Users
 	userController := controllers.UserController{}
-	users := api.Group("/users")
+	users := api.Group("/users", middlewares.IsAuthenticated)
 	users.Get("/", userController.Index)
 	users.Post("/", userController.CreateUser)
 	users.Patch("/:id", userController.UpdateUser)
@@ -32,7 +33,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Assets
 	assetController := controllers.AssetController{}
-	assets := api.Group("/assets")
+	assets := api.Group("/assets", middlewares.IsAuthenticated)
 	assets.Get("/", assetController.Index)
 	assets.Post("/", assetController.CreateAsset)
 	assets.Patch("/:id", assetController.UpdateAsset)
@@ -41,7 +42,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Department
 	departmentController := controllers.DepartmentController{}
-	departments := api.Group("/department")
+	departments := api.Group("/department", middlewares.IsAuthenticated)
 	departments.Get("/", departmentController.Index)
 	departments.Post("/", departmentController.CreateDepartment)
 	departments.Patch("/:id", departmentController.UpdateDepartment)
@@ -49,7 +50,7 @@ func RegisterRoutes(api fiber.Router) {
 	departments.Delete("/:id", departmentController.DeleteDepartment)
 	//Accesories
 	acccesorieController := controllers.AccesorieController{}
-	acccesories := api.Group("/accessories")
+	acccesories := api.Group("/accessories", middlewares.IsAuthenticated)
 	acccesories.Get("/", acccesorieController.Index)
 	acccesories.Post("/", acccesorieController.CreateAccesorie)
 	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
@@ -58,7 +59,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Tag
 	tagController := controllers.TagController{}
-	tags := api.Group("/tags")
+	tags := api.Group("/tags", middlewares.IsAuthenticated)
 	tags.Get("/", tagController.Index)
 	tags.Post("/", tagController.CreateTag)
 	tags.Patch("/:id", tagController.UpdateTag)
@@ -67,7 +68,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Status
 	statusController := controllers.StatusController{}
-	status := api.Group("/status")
+	status := api.Group("/status", middlewares.IsAuthenticated)
 	status.Get("/", statusController.Index)
 	status.Post("/", statusController.CreateStatus)
 	status.Patch("/:id", statusController.UpdateStatus)
@@ -76,7 +77,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Image
 	imageController := controllers.ImageController{}
-	images := api.Group("/images")
+	images := api.Group("/images", middlewares.IsAuthenticated)
 	images.Get("/", imageController.Index)
 	images.Post("/", imageController.Upload)
 	images.Delete("/:id", imageController.Delete)
