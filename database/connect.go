@@ -40,7 +40,7 @@ func ConnectDB() {
 }
 
 func AutoMigrate() {
-	err := DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Role{}, &models.Accesorie{}, &models.Department{}, &models.Admin{}, models.Image{})
+	err := DB.AutoMigrate(&models.Asset{}, &models.User{}, &models.Role{}, &models.Accesorie{}, &models.Department{}, &models.Admin{}, models.Image{}, models.Tag{})
 	if err != nil {
 		log.Println(err)
 		return

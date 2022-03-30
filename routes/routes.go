@@ -16,7 +16,7 @@ func RegisterRoutes(api fiber.Router) {
 
 	//Admin
 	adminController := controllers.AdminController{}
-	admins := api.Group("/admin")
+	admins := api.Group("/admin", middlewares.IsAuthenticated)
 	admins.Get("/", adminController.Index)
 	admins.Post("/", adminController.CreateAdmin)
 	admins.Patch("/:id", adminController.UpdateAdmin)
