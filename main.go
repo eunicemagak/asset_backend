@@ -18,10 +18,11 @@ func main() {
 
 	app := fiber.New()
 
+	api := app.Group("/api/v1")
+
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: false,
 	}))
-	api := app.Group("/api/v1")
 
 	//connect to Database
 	database.ConnectDB()

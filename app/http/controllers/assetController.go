@@ -15,16 +15,9 @@ type AssetController struct {
 
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
 
-	var asset []models.Asset
-	// Get first matched record
-	database.DB.Where("is_assigned = ?", false).Preload("Images").Find(&asset)
-	// if len(asset.Title) > 0 {
-	// 	return ctx.JSON(asset)
-	// } else {
-	// 	fmt.Print(" empty list")
+	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	// }
-	return ctx.JSON(&asset)
+	return ctx.JSON(models.Paginate(database.DB.Preload("Images"), &models.Asset{}, page))
 
 }
 

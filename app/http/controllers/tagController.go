@@ -15,13 +15,9 @@ type TagController struct {
 
 func (c *TagController) Index(ctx *fiber.Ctx) error {
 
-	db := database.DB
-	var tags []models.Tag
+	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	// find all notes in the database
-	db.Find(&tags)
-
-	return ctx.JSON(&tags)
+	return ctx.JSON(models.Paginate(database.DB, &models.Tag{}, page))
 }
 
 func (c *TagController) CreateTag(ctx *fiber.Ctx) error {
