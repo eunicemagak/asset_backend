@@ -68,6 +68,7 @@ func Register(c *fiber.Ctx) error {
 
 ////LOGIN
 func Login(c *fiber.Ctx) error {
+
 	var data map[string]string
 
 	if err := c.BodyParser(&data); err != nil {

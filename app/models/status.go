@@ -9,17 +9,17 @@ type Status struct {
 	Status string `json:"status"`
 }
 
-func (status *Status) Count(db *gorm.DB) int64 {
+func (state *Status) Count(db *gorm.DB) int64 {
 	var total int64
-	db.Model(&Tag{}).Count(&total)
+	db.Model(&Status{}).Count(&total)
 
 	return total
 }
 
-func (status *Status) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var tags []Tag
+func (state *Status) Take(db *gorm.DB, limit int, offset int) interface{} {
+	var status []Status
 
-	db.Offset(offset).Limit(limit).Find(&tags)
+	db.Offset(offset).Limit(limit).Find(&status)
 
-	return tags
+	return status
 }

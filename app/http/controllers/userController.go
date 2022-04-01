@@ -12,13 +12,13 @@ import (
 )
 
 type createUserReq struct {
-	ID           uint   `json:"id"`
-	Email        string `json:"email"`
-	Name         string `json:"name"`
-	AssetID      uint   `json:"asset_id"`
-	TagID        uint   `json:"tag_id"`
-	AssesorieID  uint   `json:"assesories_id"`
-	DepartmentID uint   `json:"department_id"`
+	ID      uint   `json:"id"`
+	Email   string `json:"email"`
+	Name    string `json:"name"`
+	AssetID uint   `json:"asset_id"`
+	// TagID        uint   `json:"tag_id"`
+	AccesorieID  uint `json:"accesorie_id"`
+	DepartmentID uint `json:"department_id"`
 }
 
 type UserController struct {
@@ -46,22 +46,19 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	asset := models.Asset{
 		ID: userReq.AssetID,
 	}
+	database.DB.Where("is_assigned = ?", false).Find(&asset)
 	database.DB.Find(&asset)
 	fmt.Printf("log asset %v", asset)
-
-	//tag
-	tag := models.Tag{
-		ID: userReq.TagID,
-	}
-	database.DB.Find(&tag)
-	fmt.Printf("log asset %v", tag)
+	asset.AssignedTo = userReq.Name
 
 	//accesorie
 	acccesorie := models.Accesorie{
-		ID: userReq.AssesorieID,
+		ID: userReq.AccesorieID,
 	}
-	database.DB.Find(&acccesorie)
-	fmt.Printf("log asset %v", tag)
+	database.DB.Where("is_assigned = ?", false).Find(&acccesorie)
+	acccesorie.AssignedTo = userReq.Name
+
+	fmt.Printf("log accesore %v", acccesorie)
 
 	// department
 	department := models.Department{
@@ -88,17 +85,17 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 
 	//accesorie
 	acccesorie.IsAssigned = true
-	accesorieresult := database.DB.Model(&acccesorie).Where("id = ?", userReq.AssesorieID).Update("is_assigned", true)
+	accesorieresult := database.DB.Model(&acccesorie).Where("id = ?", userReq.AccesorieID).Update("is_assigned", true)
 	if accesorieresult.Error != nil {
 		fmt.Printf("Error in updating %v", accesorieresult.Error)
 		//return result.Error
 	}
-	fmt.Printf(" asset after update %v", acccesorie)
+	fmt.Printf(" acessorie after update %v", acccesorie)
 	database.DB.Create(&user)
 
 	database.DB.Model(&user).Association("Assets").Append(&asset)
-	database.DB.Model(&user).Association("Tags").Append(&tag)
-	database.DB.Model(&user).Association("Assesories").Append(&acccesorie)
+	// database.DB.Model(&user).Association("Tags").Append(&tag)
+	database.DB.Model(&user).Association("Accesories").Append(&acccesorie)
 	database.DB.Model(&user).Association("Departments").Append(&department)
 
 	return ctx.JSON(&user)
@@ -112,7 +109,7 @@ func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Assets").Preload("Tags").Preload("Assesories").Find(&user)
+	database.DB.Preload("Assets").Preload("Departments").Preload("Assesories").Find(&user)
 	return ctx.JSON(user)
 }
 

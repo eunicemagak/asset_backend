@@ -14,13 +14,11 @@ type DepartmentController struct {
 }
 
 func (c *DepartmentController) Index(ctx *fiber.Ctx) error {
-	db := database.DB
-	var departments []models.Department
 
-	// find all notes in the database
-	db.Find(&departments)
+	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(&departments)
+	return ctx.JSON(models.Paginate(database.DB, &models.Department{}, page))
+
 }
 
 func (c *DepartmentController) CreateDepartment(ctx *fiber.Ctx) error {

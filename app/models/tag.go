@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Tag struct {
@@ -11,17 +13,17 @@ type Tag struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-// func (tag *Tag) Count(db *gorm.DB) int64 {
-// 	var total int64
-// 	db.Model(&Tag{}).Count(&total)
+func (tag *Tag) Count(db *gorm.DB) int64 {
+	var total int64
+	db.Model(&Tag{}).Count(&total)
 
-// 	return total
-// }
+	return total
+}
 
-// func (tag *Tag) Take(db *gorm.DB, limit int, offset int) interface{} {
-// 	var tags []Tag
+func (tag *Tag) Take(db *gorm.DB, limit int, offset int) interface{} {
+	var tags []Tag
 
-// 	db.Offset(offset).Limit(limit).Find(&tags)
+	db.Offset(offset).Limit(limit).Find(&tags)
 
-// 	return tags
-// }
+	return tags
+}

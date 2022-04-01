@@ -40,6 +40,11 @@ func RegisterRoutes(api fiber.Router) {
 	assets.Get("/:id", assetController.GetAsset)
 	assets.Delete("/:id", assetController.DeleteAsset)
 
+	//UnAssignedAsset
+	unassignedAssetController := controllers.UnAssignedAssetController{}
+	unassignedAsset := api.Group("/unassignedAsset", middlewares.IsAuthenticated)
+	unassignedAsset.Get("/", unassignedAssetController.Index)
+
 	//Department
 	departmentController := controllers.DepartmentController{}
 	departments := api.Group("/department", middlewares.IsAuthenticated)
@@ -57,14 +62,14 @@ func RegisterRoutes(api fiber.Router) {
 	acccesories.Get("/:id", acccesorieController.GetAccesorie)
 	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 
-	//Tag
-	tagController := controllers.TagController{}
-	tags := api.Group("/tags", middlewares.IsAuthenticated)
-	tags.Get("/", tagController.Index)
-	tags.Post("/", tagController.CreateTag)
-	tags.Patch("/:id", tagController.UpdateTag)
-	tags.Get("/:id", tagController.GetTag)
-	tags.Delete("/:id", tagController.DeleteTagt)
+	//UnAssignedAccesorie
+	unassignedAccesorieController := controllers.UnAssignedAccesorieController{}
+	unassignedAccesorie := api.Group("/unassignedAccesorie", middlewares.IsAuthenticated)
+	unassignedAccesorie.Get("/", unassignedAccesorieController.Index)
+	// un.Post("/", tagController.CreateTag)
+	// tags.Patch("/:id", tagController.UpdateTag)
+	// tags.Get("/:id", tagController.GetTag)
+	// tags.Delete("/:id", tagController.DeleteTagt)
 
 	//Status
 	statusController := controllers.StatusController{}
