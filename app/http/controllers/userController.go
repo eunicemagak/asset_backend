@@ -47,7 +47,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	asset := models.Asset{
 		ID: userReq.AssetID,
 	}
-	database.DB.Where("is_assigned = ?", false).Find(&asset)
+	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Find(&asset)
 
 	fmt.Printf("log asset %v", asset)
 	asset.AssignedTo = userReq.Name
@@ -56,7 +56,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	acccesorie := models.Accesorie{
 		ID: userReq.AccesorieID,
 	}
-	database.DB.Where("is_assigned = ?", false).Find(&acccesorie)
+	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Find(&acccesorie)
 	acccesorie.AssignedTo = userReq.Name
 
 	fmt.Printf("log accesore %v", acccesorie)

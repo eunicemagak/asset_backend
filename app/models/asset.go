@@ -18,6 +18,7 @@ type Asset struct {
 	ImageType    string    `json:"image_type"`
 	IsAssigned   bool      `json:"is_assigned" gorm:"default:false"`
 	IsClearedOf  bool      `json:"is_cleared_of" gorm:"default:false"`
+	IsDamaged    bool      `json:"is_damaged" gorm:"default:false"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 

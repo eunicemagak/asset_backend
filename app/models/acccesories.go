@@ -13,6 +13,7 @@ type Accesorie struct {
 	Description  string    `json:"description"`
 	IsAssigned   bool      `json:"is_assigned" gorm:"default:false"`
 	IsClearedOf  bool      `json:"is_cleared_of" gorm:"default:false"`
+	IsDamaged    bool      `json:"is_damaged" gorm:"default:false"`
 	PurchaseDate string    `json:"purchase_date"`
 	AssignedTo   string    `json:"assigned_to"`
 	ImageID      uint      `json:"image_id"`
