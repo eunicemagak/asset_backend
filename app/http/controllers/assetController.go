@@ -12,30 +12,64 @@ import (
 type AssetController struct {
 	DB *sql.DB
 }
+type UpdateAssetReq struct {
+	ID           uint   `json:"id"`
+	Title        string `json:"title"`
+	SerialNumber string `json:"serialnumber"`
+	Description  string `json:"description"`
+	PurchaseDate string `json:"purchase_date"`
+	ImageType    string `json:"image_type"`
+	Price        string `json:"price"`
+	StatusID     uint   `json:"status_id"`
+	CategorieID  uint   `json:"categorie_id"`
+	// ImageID      uint   `json:"image_id"`
+}
 
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
 
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB.Preload("Images"), &models.Asset{}, page))
+	return ctx.JSON(models.Paginate(database.DB, &models.Asset{}, page))
 
 }
 
 func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
-	var asset models.Asset
 
-	if err := ctx.BodyParser(&asset); err != nil {
+	var assetReq UpdateAssetReq
+	status := models.Status{
+		ID: assetReq.StatusID,
+	}
+	database.DB.Find(&status)
+	categorie := models.Categorie{
+		ID: assetReq.CategorieID,
+	}
+	database.DB.Find(&categorie)
+
+	if err := ctx.BodyParser(&assetReq); err != nil {
 		return err
 	}
 
 	//select from images where name=%asset.ImageType%
 	var image models.Image
 	// fmt.Printf(" asset-image type %v", asset.ImageType)
-	database.DB.Where("image_type = ?", asset.ImageType).First(&image)
+	database.DB.Where("image_type = ?", assetReq.ImageType).First(&image)
 	// fmt.Printf(" image %v", image)
-	asset.ImageType = image.ImageType
+	assetReq.ImageType = image.ImageType
+
+	asset := models.Asset{
+		ID:           assetReq.ID,
+		Title:        assetReq.Title,
+		Description:  assetReq.Description,
+		SerialNumber: assetReq.SerialNumber,
+		PurchaseDate: assetReq.PurchaseDate,
+		Price:        assetReq.Price,
+		ImageType:    assetReq.ImageType,
+	}
 	asset.ImageID = image.ID
+
 	database.DB.Create(&asset)
+	database.DB.Model(&asset).Association("Categories").Append(&categorie)
+	database.DB.Model(&asset).Association("Statuses").Append(&status)
 
 	return ctx.JSON(asset)
 }
@@ -47,7 +81,7 @@ func (c *AssetController) GetAsset(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Find(&asset)
+	database.DB.Preload("Statuses").Preload("Categories").Find(&asset)
 
 	return ctx.JSON(asset)
 }

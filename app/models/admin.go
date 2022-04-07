@@ -14,6 +14,8 @@ type Admin struct {
 	Email     string         `json:"email" gorm:"unique"`
 	Password  []byte         `json:"-"`
 	RoleId    uint           `json:"role_id"`
+	ImageID   uint           `json:"image_id"`
+	Image     string         `json:"image"`
 	CreatedAt time.Time      `gorm:"index"`
 	UpdatedAt time.Time      `gorm:"index"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`

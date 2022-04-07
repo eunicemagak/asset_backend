@@ -16,7 +16,7 @@ func (c *UnAssignedAssetController) Index(ctx *fiber.Ctx) error {
 
 	var asset []models.Asset
 	// Get first matched record
-	database.DB.Where("is_assigned = ?", false).Preload("Images").Find(&asset)
+	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Find(&asset)
 
 	return ctx.JSON(&asset)
 }
