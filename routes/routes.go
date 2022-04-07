@@ -61,6 +61,14 @@ func RegisterRoutes(api fiber.Router) {
 	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
 	acccesories.Get("/:id", acccesorieController.GetAccesorie)
 	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
+	//Categories
+	categoriesController := controllers.CategorieController{}
+	categories := api.Group("/categories", middlewares.IsAuthenticated)
+	categories.Get("/", categoriesController.Index)
+	categories.Post("/", categoriesController.CreateCategorie)
+	categories.Patch("/:id", categoriesController.UpdateCategories)
+	categories.Get("/:id", categoriesController.GetCategorie)
+	categories.Delete("/:id", categoriesController.DeleteCategorie)
 
 	//UnAssignedAccesorie
 	unassignedAccesorieController := controllers.UnAssignedAccesorieController{}

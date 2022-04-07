@@ -12,11 +12,12 @@ import (
 )
 
 type createUserReq struct {
-	ID      uint   `json:"id"`
-	Email   string `json:"email"`
-	Name    string `json:"name"`
-	AssetID uint   `json:"asset_id"`
-	// TagID        uint   `json:"tag_id"`
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	AssetID  uint   `json:"asset_id"`
+	IsActive bool   `json:"is_active" gorm:"default:true"`
+
 	AccesorieID  uint `json:"accesorie_id"`
 	DepartmentID uint `json:"department_id"`
 }
@@ -46,8 +47,8 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	asset := models.Asset{
 		ID: userReq.AssetID,
 	}
-	database.DB.Where("is_assigned = ?", false).Find(&asset)
-	database.DB.Find(&asset)
+	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Find(&asset)
+
 	fmt.Printf("log asset %v", asset)
 	asset.AssignedTo = userReq.Name
 
@@ -55,7 +56,7 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	acccesorie := models.Accesorie{
 		ID: userReq.AccesorieID,
 	}
-	database.DB.Where("is_assigned = ?", false).Find(&acccesorie)
+	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Find(&acccesorie)
 	acccesorie.AssignedTo = userReq.Name
 
 	fmt.Printf("log accesore %v", acccesorie)
@@ -68,12 +69,17 @@ func (c *UserController) CreateUser(ctx *fiber.Ctx) error {
 	fmt.Printf("log asset %v", department)
 
 	user := models.User{
-		ID:    userReq.ID,
-		Name:  userReq.Name,
-		Email: userReq.Email,
+		ID:       userReq.ID,
+		Name:     userReq.Name,
+		Email:    userReq.Email,
+		IsActive: userReq.IsActive,
 	}
 
 	// Update with conditions and model value
+
+	//assigned_to
+	database.DB.Model(&asset).Update("assigned_to", userReq.Name)
+	database.DB.Model(&acccesorie).Update("assigned_to", userReq.Name)
 	//asset
 	asset.IsAssigned = true
 	assetresult := database.DB.Model(&asset).Where("id = ?", userReq.AssetID).Update("is_assigned", true)
@@ -109,7 +115,7 @@ func (c *UserController) GetUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Assets").Preload("Departments").Preload("Assesories").Find(&user)
+	database.DB.Preload("Assets").Preload("Departments").Preload("Accesories").Find(&user)
 	return ctx.JSON(user)
 }
 
@@ -140,7 +146,7 @@ func (c *UserController) DeleteUser(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Department").Preload("Asset").Preload("Accesorie").Delete(&user)
+	database.DB.Delete(&user)
 
 	return nil
 }

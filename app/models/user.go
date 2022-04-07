@@ -7,9 +7,10 @@ import (
 )
 
 type User struct {
-	ID    uint   `gorm:"primarykey"`
-	Name  string `json:"name"`
-	Email string `json:"email" gorm:"unique"`
+	ID       uint   `gorm:"primarykey"`
+	Name     string `json:"name"`
+	Email    string `json:"email" gorm:"unique"`
+	IsActive bool   `json:"is_active" gorm:"default:true"`
 
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

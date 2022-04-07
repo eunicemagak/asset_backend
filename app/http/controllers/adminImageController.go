@@ -14,11 +14,11 @@ import (
 	"gitlab.ci.emalify.com/roamtech/asset_be/database"
 )
 
-type ImageController struct {
+type AdminImageController struct {
 	DB *sql.DB
 }
 
-func (c *ImageController) Index(ctx *fiber.Ctx) error {
+func (c *AdminImageController) Index(ctx *fiber.Ctx) error {
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
 	return ctx.JSON(models.Paginate(database.DB, &models.Image{}, page))
@@ -26,7 +26,7 @@ func (c *ImageController) Index(ctx *fiber.Ctx) error {
 
 //FUNCTIONALITY TO CREATE IMAGE
 
-func (ic *ImageController) Upload(ctx *fiber.Ctx) error {
+func (ic *AdminImageController) UploadImage(ctx *fiber.Ctx) error {
 
 	//parse incoming image file
 	var image models.ImagePost
@@ -84,7 +84,7 @@ func (ic *ImageController) Upload(ctx *fiber.Ctx) error {
 
 //FUNCTIONALITY TO DELETE IMAGE
 
-func (ic *ImageController) Delete(ctx *fiber.Ctx) error {
+func (ic *AdminImageController) DeleteImage(ctx *fiber.Ctx) error {
 
 	// extract image name from params
 	imageName := ctx.Params("image_name")

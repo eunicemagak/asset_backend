@@ -12,6 +12,8 @@ type Accesorie struct {
 	SerialNumber string    `json:"serialnumber"`
 	Description  string    `json:"description"`
 	IsAssigned   bool      `json:"is_assigned" gorm:"default:false"`
+	IsClearedOf  bool      `json:"is_cleared_of" gorm:"default:false"`
+	IsDamaged    bool      `json:"is_damaged" gorm:"default:false"`
 	PurchaseDate string    `json:"purchase_date"`
 	AssignedTo   string    `json:"assigned_to"`
 	ImageID      uint      `json:"image_id"`
@@ -19,6 +21,9 @@ type Accesorie struct {
 	Price        string    `json:"price"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
+
+	Categories []Categorie `json:"categorie" gorm:"many2many:accesorie_categorie;"`
+	Statuses   []Status    `json:"status" gorm:"many2many:accesorie_status;"`
 }
 
 func (accesorie *Accesorie) Count(db *gorm.DB) int64 {
@@ -31,7 +36,7 @@ func (accesorie *Accesorie) Count(db *gorm.DB) int64 {
 func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{} {
 	var acccesories []Accesorie
 
-	db.Offset(offset).Limit(limit).Preload("Images").Find(&acccesories)
+	db.Offset(offset).Limit(limit).Preload("Categories").Preload("Statuses").Find(&acccesories)
 
 	return acccesories
 }
