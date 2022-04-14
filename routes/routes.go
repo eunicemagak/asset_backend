@@ -36,14 +36,28 @@ func RegisterRoutes(api fiber.Router) {
 	assets := api.Group("/assets", middlewares.IsAuthenticated)
 	assets.Get("/", assetController.Index)
 	assets.Post("/", assetController.CreateAsset)
-	assets.Patch("/:id", assetController.UpdateAsset)
+	assets.Put("/:assetId", assetController.UpdateAsset)
 	assets.Get("/:id", assetController.GetAsset)
 	assets.Delete("/:id", assetController.DeleteAsset)
 
-	//UnAssignedAsset
-	unassignedAssetController := controllers.UnAssignedAssetController{}
-	unassignedAsset := api.Group("/unassignedAsset", middlewares.IsAuthenticated)
-	unassignedAsset.Get("/", unassignedAssetController.Index)
+	//UnAssigned Assets
+	unassignedassetController := controllers.UnAssignedAssetController{}
+	unassignedAssets := api.Group("/unAssignedAssets", middlewares.IsAuthenticated)
+	unassignedAssets.Get("/", unassignedassetController.Index)
+
+	//Accesories
+	acccesorieController := controllers.AccesorieController{}
+	acccesories := api.Group("/accessories", middlewares.IsAuthenticated)
+	acccesories.Get("/", acccesorieController.Index)
+	acccesories.Post("/", acccesorieController.CreateAccesorie)
+	acccesories.Put("/:accessorieId", acccesorieController.UpdateAccesorie)
+	acccesories.Get("/:id", acccesorieController.GetAccesorie)
+	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
+
+	//UnAssigned Accesorie
+	unassignedaccesorieController := controllers.UnAssignedAccesorieController{}
+	unassignedAccesorie := api.Group("/unAssignedAccesorie", middlewares.IsAuthenticated)
+	unassignedAccesorie.Get("/", unassignedaccesorieController.Index)
 
 	//Department
 	departmentController := controllers.DepartmentController{}
@@ -53,14 +67,6 @@ func RegisterRoutes(api fiber.Router) {
 	departments.Patch("/:id", departmentController.UpdateDepartment)
 	departments.Get("/:id", departmentController.GetDepartment)
 	departments.Delete("/:id", departmentController.DeleteDepartment)
-	//Accesories
-	acccesorieController := controllers.AccesorieController{}
-	acccesories := api.Group("/accessories", middlewares.IsAuthenticated)
-	acccesories.Get("/", acccesorieController.Index)
-	acccesories.Post("/", acccesorieController.CreateAccesorie)
-	acccesories.Patch("/:id", acccesorieController.UpdateAccesorie)
-	acccesories.Get("/:id", acccesorieController.GetAccesorie)
-	acccesories.Delete("/:id", acccesorieController.DeleteAccesorie)
 	//Categories
 	categoriesController := controllers.CategorieController{}
 	categories := api.Group("/categories", middlewares.IsAuthenticated)
@@ -69,15 +75,6 @@ func RegisterRoutes(api fiber.Router) {
 	categories.Patch("/:id", categoriesController.UpdateCategories)
 	categories.Get("/:id", categoriesController.GetCategorie)
 	categories.Delete("/:id", categoriesController.DeleteCategorie)
-
-	//UnAssignedAccesorie
-	unassignedAccesorieController := controllers.UnAssignedAccesorieController{}
-	unassignedAccesorie := api.Group("/unassignedAccesorie", middlewares.IsAuthenticated)
-	unassignedAccesorie.Get("/", unassignedAccesorieController.Index)
-	// un.Post("/", tagController.CreateTag)
-	// tags.Patch("/:id", tagController.UpdateTag)
-	// tags.Get("/:id", tagController.GetTag)
-	// tags.Delete("/:id", tagController.DeleteTagt)
 
 	//Status
 	statusController := controllers.StatusController{}

@@ -16,13 +16,17 @@ type AdminController struct {
 }
 
 func (c *AdminController) Index(ctx *fiber.Ctx) error {
+	var admin []models.Admin
+	database.DB.Find(&admin)
+
+	return ctx.JSON(admin)
 	// if err := middlewares.IsAuthenticated(ctx); err != nil {
 	//         return err
 	// }
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Admin{}, page))
+	// return ctx.JSON(models.Paginate(database.DB, &models.Admin{}, page))
 }
 
 func (c *AdminController) CreateAdmin(ctx *fiber.Ctx) error {

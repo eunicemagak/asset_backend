@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Accesorie struct {
@@ -23,20 +21,19 @@ type Accesorie struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 
 	Categories []Categorie `json:"categorie" gorm:"many2many:accesorie_categorie;"`
-	Statuses   []Status    `json:"status" gorm:"many2many:accesorie_status;"`
 }
 
-func (accesorie *Accesorie) Count(db *gorm.DB) int64 {
-	var total int64
-	db.Model(&Accesorie{}).Count(&total)
+// func (accesorie *Accesorie) Count(db *gorm.DB) int64 {
+// 	var total int64
+// 	db.Model(&Accesorie{}).Count(&total)
 
-	return total
-}
+// 	return total
+// }
 
-func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var acccesories []Accesorie
+// func (acccesorie *Accesorie) Take(db *gorm.DB, limit int, offset int) interface{} {
+// 	var acccesories []Accesorie
 
-	db.Offset(offset).Limit(limit).Preload("Categories").Preload("Statuses").Find(&acccesories)
+// 	db.Preload("Categories").Offset(offset).Limit(limit).Find(&acccesories)
 
-	return acccesories
-}
+// 	return acccesories
+// }

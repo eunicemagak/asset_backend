@@ -12,14 +12,13 @@ import (
 )
 
 type createUserReq struct {
-	ID       uint   `json:"id"`
-	Email    string `json:"email"`
-	Name     string `json:"name"`
-	AssetID  uint   `json:"asset_id"`
-	IsActive bool   `json:"is_active" gorm:"default:true"`
-
-	AccesorieID  uint `json:"accesorie_id"`
-	DepartmentID uint `json:"department_id"`
+	ID           uint   `json:"id"`
+	Email        string `json:"email"`
+	Name         string `json:"name"`
+	AssetID      uint   `json:"asset_id"`
+	IsActive     bool   `json:"is_active" gorm:"default:true"`
+	AccesorieID  uint   `json:"accesorie_id"`
+	DepartmentID uint   `json:"department_id"`
 }
 
 type UserController struct {
@@ -27,10 +26,11 @@ type UserController struct {
 }
 
 func (c *UserController) Index(ctx *fiber.Ctx) error {
+	var users []models.User
+	database.DB.Preload("Assets").Preload("Accesories").Preload("Departments").Find(&users)
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	return ctx.JSON(users)
 
-	return ctx.JSON(models.Paginate(database.DB, &models.User{}, page))
 }
 
 func (c *UserController) CreateUser(ctx *fiber.Ctx) error {

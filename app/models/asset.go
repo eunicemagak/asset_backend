@@ -25,7 +25,6 @@ type Asset struct {
 	Created string `json:"created"`
 
 	Categories []Categorie `json:"categorie" gorm:"many2many:asset_categorie;"`
-	Statuses   []Status    `json:"status" gorm:"many2many:asset_status;"`
 }
 
 func (asset *Asset) Count(db *gorm.DB) int64 {
@@ -37,8 +36,7 @@ func (asset *Asset) Count(db *gorm.DB) int64 {
 
 func (asset *Asset) Take(db *gorm.DB, limit int, offset int) interface{} {
 	var assets []Asset
-
-	db.Offset(offset).Limit(limit).Preload("Statuses").Preload("Categories").Find(&assets)
+	db.Preload("Categories").Offset(offset).Limit(limit).Find(&assets)
 
 	return assets
 }

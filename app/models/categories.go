@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Categorie struct {
@@ -13,17 +11,17 @@ type Categorie struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (categorie *Categorie) Count(db *gorm.DB) int64 {
-	var total int64
-	db.Model(&Categorie{}).Count(&total)
+// func (categorie *Categorie) Count(db *gorm.DB) int64 {
+// 	var total int64
+// 	db.Model(&Categorie{}).Count(&total)
 
-	return total
-}
+// 	return total
+// }
 
-func (categorie *Categorie) Take(db *gorm.DB, limit int, offset int) interface{} {
-	var categories []Categorie
+// func (categorie *Categorie) Take(db *gorm.DB, limit int, offset int) interface{} {
+// 	var categories []Categorie
 
-	db.Offset(offset).Limit(limit).Find(&categories)
+// 	db.Offset(offset).Limit(limit).Find(&categories)
 
-	return categories
-}
+// 	return categories
+// }

@@ -12,7 +12,7 @@ import (
 type AssetController struct {
 	DB *sql.DB
 }
-type UpdateAssetReq struct {
+type CreateAssetReq struct {
 	ID           uint   `json:"id"`
 	Title        string `json:"title"`
 	SerialNumber string `json:"serialnumber"`
@@ -20,34 +20,33 @@ type UpdateAssetReq struct {
 	PurchaseDate string `json:"purchase_date"`
 	ImageType    string `json:"image_type"`
 	Price        string `json:"price"`
-	StatusID     uint   `json:"status_id"`
 	CategorieID  uint   `json:"categorie_id"`
 	// ImageID      uint   `json:"image_id"`
 }
 
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	var assets []models.Asset
+	database.DB.Preload("Categories").Find(&assets)
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Asset{}, page))
+	return ctx.JSON(assets)
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
+
+	// return ctx.JSON(models.Paginate(database.DB, &models.Asset{}, page))
 
 }
 
 func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
 
-	var assetReq UpdateAssetReq
-	status := models.Status{
-		ID: assetReq.StatusID,
-	}
-	database.DB.Find(&status)
-	categorie := models.Categorie{
-		ID: assetReq.CategorieID,
-	}
-	database.DB.Find(&categorie)
+	var assetReq CreateAssetReq
 
 	if err := ctx.BodyParser(&assetReq); err != nil {
 		return err
 	}
+	categorie := models.Categorie{
+		ID: assetReq.CategorieID,
+	}
+	database.DB.Find(&categorie)
 
 	//select from images where name=%asset.ImageType%
 	var image models.Image
@@ -69,7 +68,6 @@ func (c *AssetController) CreateAsset(ctx *fiber.Ctx) error {
 
 	database.DB.Create(&asset)
 	database.DB.Model(&asset).Association("Categories").Append(&categorie)
-	database.DB.Model(&asset).Association("Statuses").Append(&status)
 
 	return ctx.JSON(asset)
 }
@@ -81,25 +79,58 @@ func (c *AssetController) GetAsset(ctx *fiber.Ctx) error {
 		ID: uint(id),
 	}
 
-	database.DB.Preload("Statuses").Preload("Categories").Find(&asset)
+	database.DB.Preload("Categories").Find(&asset)
 
 	return ctx.JSON(asset)
 }
 
 func (c *AssetController) UpdateAsset(ctx *fiber.Ctx) error {
-	id, _ := strconv.Atoi(ctx.Params("id"))
+	type Update struct {
+		Title        string `json:"title"`
+		SerialNumber string `json:"serialnumber"`
+		Description  string `json:"description"`
+		Price        string `json:"price"`
+		PurchaseDate string `json:"purchase_date"`
+		AssignedTo   string `json:"assigned_to"`
+		IsAssigned   bool   `json:"is_assigned" gorm:"default:false"`
+		IsClearedOf  bool   `json:"is_cleared_of" gorm:"default:false"`
+		IsDamaged    bool   `json:"is_damaged" gorm:"default:false"`
+	}
+	db := database.DB
 
-	asset := models.Asset{
-		ID: uint(id),
+	var asset models.Asset
+	// Read the param noteId
+	id := ctx.Params("assetId")
+
+	// Find the note with the given Id
+	db.Find(&asset, "id = ?", id)
+
+	// Store the body containing the updated data and return error if encountered
+	var updateAsset Update
+	err := ctx.BodyParser(&updateAsset)
+	if err != nil {
+		return ctx.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+	// Edit the note
+	asset.Title = updateAsset.Title
+	asset.SerialNumber = updateAsset.SerialNumber
+	asset.Description = updateAsset.Description
+	asset.IsAssigned = updateAsset.IsAssigned
+	asset.IsClearedOf = updateAsset.IsClearedOf
+	asset.IsDamaged = updateAsset.IsDamaged
+	asset.Price = updateAsset.Price
+	asset.PurchaseDate = updateAsset.PurchaseDate
+	if asset.IsClearedOf {
+		asset.IsAssigned = false
+
 	}
 
-	if err := ctx.BodyParser(&asset); err != nil {
-		return err
-	}
+	// Save the Changes
+	db.Save(&asset)
 
-	database.DB.Model(&asset).Updates(asset)
+	// Return the updated note
+	return ctx.JSON(fiber.Map{"status": "success", "message": "Asset Found", "data": asset})
 
-	return ctx.JSON(asset)
 }
 
 func (c *AssetController) DeleteAsset(ctx *fiber.Ctx) error {

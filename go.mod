@@ -3,6 +3,7 @@ module gitlab.ci.emalify.com/roamtech/asset_be
 go 1.17
 
 require (
+	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/joho/godotenv v1.4.0
 	gorm.io/gorm v1.23.1
 )
