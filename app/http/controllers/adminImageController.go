@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -19,9 +18,13 @@ type AdminImageController struct {
 }
 
 func (c *AdminImageController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	var image []models.Image
+	database.DB.Find(&image)
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Image{}, page))
+	return ctx.JSON(image)
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
+
+	// return ctx.JSON(models.Paginate(database.DB, &models.Image{}, page))
 }
 
 //FUNCTIONALITY TO CREATE IMAGE

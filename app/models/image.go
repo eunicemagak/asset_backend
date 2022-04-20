@@ -7,7 +7,7 @@ import (
 )
 
 type Image struct {
-	ID        uint      `gorm:"id"`
+	ID        uint      `json:"id" gorm:"primaryKey"`
 	ImageType string    `json:"image_type"`
 	Image     string    `json:"image_name"`
 	ImageUrl  string    `json:"image_url"`

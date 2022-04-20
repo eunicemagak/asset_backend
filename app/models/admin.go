@@ -8,7 +8,7 @@ import (
 )
 
 type Admin struct {
-	ID        uint           `gorm:"primarykey"`
+	ID        uint           `json:"id" gorm:"primaryKey"`
 	FirstName string         `json:"first_name"`
 	LastName  string         `json:"last_name"`
 	Email     string         `json:"email" gorm:"unique"`

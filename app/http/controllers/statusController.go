@@ -14,9 +14,13 @@ type StatusController struct {
 }
 
 func (c *StatusController) Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	var status []models.Status
+	database.DB.Find(&status)
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Status{}, page))
+	return ctx.JSON(status)
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
+
+	// return ctx.JSON(models.Paginate(database.DB, &models.Status{}, page))
 }
 
 func (c *StatusController) CreateStatus(ctx *fiber.Ctx) error {

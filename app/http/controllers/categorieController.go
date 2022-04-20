@@ -14,10 +14,13 @@ type CategorieController struct {
 }
 
 func (c *CategorieController) Index(ctx *fiber.Ctx) error {
+	var categories []models.Categorie
+	database.DB.Order("id asc").Find(&categories)
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
+	return ctx.JSON(categories)
+	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
 
-	return ctx.JSON(models.Paginate(database.DB, &models.Categorie{}, page))
+	// return ctx.JSON(models.Paginate(database.DB, &models.Categorie{}, page))
 
 }
 
