@@ -15,7 +15,7 @@ type DepartmentController struct {
 
 func (c *DepartmentController) Index(ctx *fiber.Ctx) error {
 	var departments []models.Department
-	database.DB.Find(&departments)
+	database.DB.Order("id asc").Find(&departments)
 
 	return ctx.JSON(departments)
 

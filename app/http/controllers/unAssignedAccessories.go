@@ -16,7 +16,7 @@ func (c *UnAssignedAccesorieController) Index(ctx *fiber.Ctx) error {
 
 	var acccesorie []models.Accesorie
 	// Get first matched record
-	database.DB.Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Preload("Images").Find(&acccesorie)
+	database.DB.Order("id asc").Where("is_assigned = ?", false).Where("is_cleared_of = ?", false).Where("is_damaged = ?", false).Preload("Images").Find(&acccesorie)
 
 	return ctx.JSON(&acccesorie)
 }

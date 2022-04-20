@@ -5,9 +5,9 @@ import (
 )
 
 type Accesorie struct {
-	ID           uint      `gorm:"id"`
+	ID           uint      `json:"id" gorm:"primaryKey"`
 	Title        string    `json:"title"`
-	SerialNumber string    `json:"serialnumber"`
+	SerialNumber string    `json:"serialnumber" gorm:"unique"`
 	Description  string    `json:"description"`
 	IsAssigned   bool      `json:"is_assigned" gorm:"default:false"`
 	IsClearedOf  bool      `json:"is_cleared_of" gorm:"default:false"`

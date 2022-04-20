@@ -15,7 +15,7 @@ type CategorieController struct {
 
 func (c *CategorieController) Index(ctx *fiber.Ctx) error {
 	var categories []models.Categorie
-	database.DB.Find(&categories)
+	database.DB.Order("id asc").Find(&categories)
 
 	return ctx.JSON(categories)
 	// page, _ := strconv.Atoi(ctx.Query("page", "1"))

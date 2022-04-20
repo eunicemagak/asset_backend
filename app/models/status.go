@@ -1,7 +1,7 @@
 package models
 
 type Status struct {
-	ID     uint   `gorm:"id"`
+	ID     uint   `json:"id" gorm:"primaryKey"`
 	Status string `json:"status"`
 }
 

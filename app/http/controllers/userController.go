@@ -27,7 +27,7 @@ type UserController struct {
 
 func (c *UserController) Index(ctx *fiber.Ctx) error {
 	var users []models.User
-	database.DB.Preload("Assets").Preload("Accesories").Preload("Departments").Find(&users)
+	database.DB.Order("id asc").Preload("Assets").Preload("Accesories").Preload("Departments").Find(&users)
 
 	return ctx.JSON(users)
 

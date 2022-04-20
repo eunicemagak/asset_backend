@@ -7,9 +7,9 @@ import (
 )
 
 type Asset struct {
-	ID           uint      `gorm:"id"`
+	ID           uint      `json:"id" gorm:"primaryKey"`
 	Title        string    `json:"title"`
-	SerialNumber string    `json:"serialnumber"`
+	SerialNumber string    `json:"serialnumber" gorm:"unique"`
 	Description  string    `json:"description"`
 	Price        string    `json:"price"`
 	PurchaseDate string    `json:"purchase_date"`

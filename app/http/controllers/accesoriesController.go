@@ -29,7 +29,7 @@ type AccesorieController struct {
 func (c *AccesorieController) Index(ctx *fiber.Ctx) error {
 
 	var acccesories []models.Accesorie
-	database.DB.Preload("Categories").Find(&acccesories)
+	database.DB.Order("id asc").Preload("Categories").Find(&acccesories)
 
 	return ctx.JSON(acccesories)
 }

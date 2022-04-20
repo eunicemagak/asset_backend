@@ -17,7 +17,7 @@ type AdminController struct {
 
 func (c *AdminController) Index(ctx *fiber.Ctx) error {
 	var admin []models.Admin
-	database.DB.Find(&admin)
+	database.DB.Order("id asc").Find(&admin)
 
 	return ctx.JSON(admin)
 	// if err := middlewares.IsAuthenticated(ctx); err != nil {

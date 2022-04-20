@@ -27,7 +27,7 @@ type CreateAssetReq struct {
 func (c *AssetController) Index(ctx *fiber.Ctx) error {
 
 	var assets []models.Asset
-	database.DB.Preload("Categories").Find(&assets)
+	database.DB.Order("id asc").Preload("Categories").Find(&assets)
 
 	return ctx.JSON(assets)
 	// page, _ := strconv.Atoi(ctx.Query("page", "1"))
